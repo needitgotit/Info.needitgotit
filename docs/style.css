@@ -32,12 +32,15 @@ body {
   background: linear-gradient(135deg, #c40000, #ff1e1e);
   color: white;
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   padding: 60px 40px;
   align-items: center;
+  gap: 20px;
 }
 
 .hero-text {
-  max-width: 50%;
+  max-width: 500px;
 }
 
 .hero h1 {
@@ -65,6 +68,12 @@ body {
   font-weight: 700;
   border-radius: 8px;
   cursor: pointer;
+}
+
+.hero-flyer img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 12px;
 }
 
 .hero-mascot img {
@@ -102,6 +111,7 @@ body {
   padding: 14px;
   font-weight: 700;
   border-radius: 6px;
+  cursor: pointer;
 }
 
 .contact {
@@ -115,10 +125,4 @@ footer {
   text-align: center;
   padding: 20px;
   font-size: 14px;
-}
-.hero-flyer {
-  max-width: 100%;
-  height: auto;
-  margin-top: 20px;
-  border-radius: 12px;
 }
