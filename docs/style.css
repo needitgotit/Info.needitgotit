@@ -1,0 +1,118 @@
+* {
+  box-sizing: border-box;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+}
+
+body {
+  margin: 0;
+  background: #f7f7f7;
+  color: #222;
+}
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 40px;
+  background: white;
+}
+
+.nav img {
+  height: 40px;
+}
+
+.nav a {
+  margin-left: 20px;
+  text-decoration: none;
+  font-weight: 600;
+  color: #222;
+}
+
+.hero {
+  background: linear-gradient(135deg, #c40000, #ff1e1e);
+  color: white;
+  display: flex;
+  padding: 60px 40px;
+  align-items: center;
+}
+
+.hero-text {
+  max-width: 50%;
+}
+
+.hero h1 {
+  font-size: 64px;
+  margin-bottom: 10px;
+}
+
+.hero h1 span {
+  font-weight: 300;
+}
+
+.hero strong {
+  color: #ffd400;
+}
+
+.hero p {
+  font-size: 18px;
+  max-width: 500px;
+}
+
+.hero-buttons button {
+  background: #ffd400;
+  border: none;
+  padding: 14px 28px;
+  font-weight: 700;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.hero-mascot img {
+  max-height: 420px;
+}
+
+.trust {
+  text-align: center;
+  padding: 40px;
+}
+
+.services {
+  padding: 60px 40px;
+  background: white;
+}
+
+.booking-box {
+  max-width: 400px;
+  margin: auto;
+  display: grid;
+  gap: 12px;
+}
+
+.booking-box input,
+.booking-box select {
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.booking-box button {
+  background: #c40000;
+  color: white;
+  border: none;
+  padding: 14px;
+  font-weight: 700;
+  border-radius: 6px;
+}
+
+.contact {
+  background: #111;
+  color: white;
+  padding: 40px;
+  text-align: center;
+}
+
+footer {
+  text-align: center;
+  padding: 20px;
+  font-size: 14px;
+}
