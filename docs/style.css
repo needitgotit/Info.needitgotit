@@ -116,3 +116,9 @@ footer {
   padding: 20px;
   font-size: 14px;
 }
+.hero-flyer {
+  max-width: 100%;
+  height: auto;
+  margin-top: 20px;
+  border-radius: 12px;
+}
