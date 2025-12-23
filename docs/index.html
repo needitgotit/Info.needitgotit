@@ -10,7 +10,7 @@
 
 <header class="nav">
   <div class="logo">
-    <img src="logo.png" alt="Need It Got It Logo">
+    <img src="images/logo.png" alt="Need It Got It Logo">
   </div>
   <nav>
     <a href="#services">Services</a>
@@ -20,15 +20,14 @@
 
 <section class="hero">
   <div class="hero-text">
-    <div class="hero-flyer">
-  <img src="images/flyer.jpg" alt="Need It Got It Flyer">
-</div>
-
     <h1><span>Need It?</span> <strong>Got It.</strong></h1>
     <p>Reliable, on-demand services built on trust, speed, and professionalism.</p>
     <div class="hero-buttons">
       <button onclick="document.getElementById('services').scrollIntoView()">Our Services</button>
     </div>
+  </div>
+  <div class="hero-flyer">
+    <img src="images/flyer.jpg" alt="Need It Got It Flyer">
   </div>
   <div class="hero-mascot">
     <img src="images/mascot.png" alt="Need It Got It Mascot">
@@ -55,9 +54,9 @@
 
     <label>Service</label>
     <select id="service"></select>
-    
-<label>Service Description</label>
-<p id="service-description"></p>
+
+    <label>Service Description</label>
+    <p id="service-description"></p>
 
     <label>Preferred Time</label>
     <input type="datetime-local" id="time">
@@ -83,5 +82,9 @@
 </footer>
 
 <script src="script.js"></script>
+<script>
+  // Set current year
+  document.getElementById('year').textContent = new Date().getFullYear();
+</script>
 </body>
 </html>
