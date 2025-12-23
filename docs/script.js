@@ -62,6 +62,20 @@ function loadServices() {
   });
 }
 
+// Show description below select
+document.getElementById("service").addEventListener("change", function() {
+  const selected = this.selectedOptions[0];
+  const desc = selected ? selected.dataset.description : "";
+  let descEl = document.getElementById("service-description");
+
+  if (!descEl) {
+    descEl = document.createElement("p");
+    descEl.id = "service-description";
+    this.parentNode.appendChild(descEl);
+  }
+  descEl.textContent = desc;
+});
+
 // Booking confirmation
 function bookService() {
   const name = document.getElementById("name").value;
@@ -80,22 +94,4 @@ function bookService() {
     `Scheduled: ${time}\n\n` +
     `A confirmation will be sent to info.needitgotit@gmail.com`
   );
-
-  // EmailJS / backend hook goes here (already structured safely)
 }
-
-// Auto year fix (no more visual mistakes)
-document.getElementById("year").textContent = new Date().getFullYear();
-// Show description below service select
-document.getElementById("service").addEventListener("change", function() {
-  const selected = this.selectedOptions[0];
-  const desc = selected ? selected.dataset.description : "";
-  let descEl = document.getElementById("service-description");
-
-  if (!descEl) {
-    descEl = document.createElement("p");
-    descEl.id = "service-description";
-    this.parentNode.appendChild(descEl);
-  }
-  descEl.textContent = desc;
-});
