@@ -1,129 +1,55 @@
-* {
-  box-sizing: border-box;
-  font-family: 'Segoe UI', system-ui, sans-serif;
-}
-<link rel="stylesheet" href="style.css">
+/* General */
+body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
 
-body {
-  margin: 0;
-  background: #f7f7f7;
-  color: #222;
-}
+/* Header */
+.header { background: white; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; }
+.logo { font-weight: bold; font-size: 1.2em; color: #ffd400; -webkit-text-stroke: 1px black; }
+.nav { display: flex; gap: 20px; }
 
-.nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px 40px;
-  background: white;
-}
-
-.nav img {
-  height: 40px;
-}
-
-.nav a {
-  margin-left: 20px;
-  text-decoration: none;
-  font-weight: 600;
-  color: #222;
-}
-
+/* Hero */
 .hero {
-  background: linear-gradient(135deg, #c40000, #ff1e1e);
-  color: white;
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
-  padding: 60px 40px;
+  justify-content: space-between;
   align-items: center;
-  gap: 20px;
+  background: linear-gradient(135deg, #c40000, #ff1e1e);
+  color: white;
+  padding: 60px 20px;
 }
 
-.hero-text {
-  max-width: 500px;
-}
+.hero-content { max-width: 500px; }
+.hero h1 { font-size: 3em; margin: 0; }
+.hero .tagline { font-size: 1.2em; margin: 10px 0; }
 
-.hero h1 {
-  font-size: 64px;
-  margin-bottom: 10px;
-}
+.btn { padding: 10px 20px; font-weight: bold; border-radius: 8px; cursor: pointer; margin-right: 10px; transition: all 0.3s ease; }
+.btn-yellow { background: #ffd400; color: #222; border: none; }
+.btn-yellow:hover { transform: translateY(-2px); box-shadow: 0 4px 6px rgba(0,0,0,0.2); }
+.btn-outline { border: 2px solid white; background: transparent; color: white; }
+.btn-outline:hover { background: white; color: #c40000; }
 
-.hero h1 span {
-  font-weight: 300;
-}
+.mascot { position: relative; text-align: center; }
+.mascot img { max-width: 300px; height: auto; }
 
-.hero strong {
-  color: #ffd400;
-}
+/* Mid Banner */
+.mid-banner { background: #f5f5f5; text-align: center; padding: 20px; font-style: italic; }
 
-.hero p {
-  font-size: 18px;
-  max-width: 500px;
-}
-
-.hero-buttons button {
-  background: #ffd400;
-  border: none;
-  padding: 14px 28px;
-  font-weight: 700;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-.hero-flyer img {
-  max-width: 100%;
-  height: auto;
-  border-radius: 12px;
-}
-
-.hero-mascot img {
-  max-height: 420px;
-}
-
-.trust {
-  text-align: center;
-  padding: 40px;
-}
-
-.services {
-  padding: 60px 40px;
+/* Services */
+.services { padding: 40px 20px; text-align: center; }
+.service-cards { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; }
+.card {
   background: white;
-}
-
-.booking-box {
-  max-width: 400px;
-  margin: auto;
-  display: grid;
-  gap: 12px;
-}
-
-.booking-box input,
-.booking-box select {
-  padding: 10px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-}
-
-.booking-box button {
-  background: #c40000;
-  color: white;
-  border: none;
-  padding: 14px;
-  font-weight: 700;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-.contact {
-  background: #111;
-  color: white;
-  padding: 40px;
-  text-align: center;
-}
-
-footer {
-  text-align: center;
   padding: 20px;
-  font-size: 14px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  border-radius: 10px;
+  width: 300px;
+  text-align: center;
+  transition: transform 0.3s ease;
 }
+.card:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0,0,0,0.2); }
+
+/* Footer */
+.footer { background: darkred; color: white; padding: 40px 20px; text-align: center; }
+.contact-info { font-size: 1.1em; }
+
+.copyright { background: black; color: white; text-align: center; padding: 10px; font-size: 0.8em; }
+
