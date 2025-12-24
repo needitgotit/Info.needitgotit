@@ -2,89 +2,78 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Need It! Got It! — On-Demand Services</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
+  <title>Need It? Got It!</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-<header class="nav">
-  <div class="logo">
-    <img src="images/logo.png" alt="Need It Got It Logo">
-  </div>
-  <nav>
-    <a href="#services">Services</a>
-    <a href="#contact">Contact</a>
+<!-- Header -->
+<header class="header">
+  <div class="logo">NEED IT!<br>GOT IT!</div>
+  <nav class="nav">
+    <span>Services</span>
+    <span>Contact</span>
+    <span>🛒</span>
+    <span>👤</span>
   </nav>
 </header>
 
+<!-- Hero Section -->
 <section class="hero">
-  <div class="hero-text">
-    <h1><span>Need It?</span> <strong>Got It.</strong></h1>
-    <p>Reliable, on-demand services built on trust, speed, and professionalism.</p>
-    <div class="hero-buttons">
-      <button onclick="document.getElementById('services').scrollIntoView()">Our Services</button>
+  <div class="hero-content">
+    <h1>Need It?<br>Got It.</h1>
+    <p class="tagline">Reliable, on-demand services built on trust, speed, and professionalism.</p>
+    <p>When something needs to get done – we show up and deliver.</p>
+    <button class="btn btn-yellow">Get Started</button>
+    <button class="btn btn-outline">Our Services</button>
+  </div>
+  <div class="mascot">
+    <img src="images/mascot.png" alt="Cartoon man in red cap and shirt pointing">
+    <div class="mascot-text">NEED IT!<br>GOT IT!</div>
+  </div>
+</section>
+
+<!-- Mid Banner -->
+<div class="mid-banner">
+  <p><strong>Trusted. Reliable. Professional.</strong><br>Serving our community with integrity.</p>
+</div>
+
+<!-- Services Section -->
+<section class="services">
+  <h2>What We Offer</h2>
+  <div class="service-cards">
+    <div class="card">
+      <div>📧</div>
+      <h3>Fast Response</h3>
+      <p>We value your time and act quickly when it matters most.</p>
+    </div>
+    <div class="card">
+      <div>💼</div>
+      <h3>Dependable Service</h3>
+      <p>Consistent, professional service you can trust every time.</p>
+    </div>
+    <div class="card">
+      <div>🆘</div>
+      <h3>Business & Personal Support</h3>
+      <p>Solutions designed to help individuals and businesses move forward.</p>
     </div>
   </div>
-  <div class="hero-flyer">
-    <img src="images/flyer.jpg" alt="Need It Got It Flyer">
-  </div>
-  <div class="hero-mascot">
-    <img src="images/mascot.png" alt="Need It Got It Mascot">
-  </div>
 </section>
 
-<section class="trust">
-  <h2>Trusted. Reliable. Professional.</h2>
-  <p>Serving our community with integrity.</p>
-</section>
-
-<section id="services" class="services">
-  <h2>Book a Service</h2>
-
-  <div class="booking-box">
-    <label>Category</label>
-    <select id="category" onchange="loadServices()">
-      <option value="">Select Category</option>
-      <option value="home">Home & Property</option>
-      <option value="personal">Personal & Care</option>
-      <option value="delivery">Delivery & Support</option>
-      <option value="events">Events & Promotion</option>
-    </select>
-
-    <label>Service</label>
-    <select id="service"></select>
-
-    <label>Service Description</label>
-    <p id="service-description"></p>
-
-    <label>Preferred Time</label>
-    <input type="datetime-local" id="time">
-
-    <label>Your Name</label>
-    <input type="text" id="name">
-
-    <label>Your Email</label>
-    <input type="email" id="email">
-
-    <button onclick="bookService()">Confirm Booking</button>
-  </div>
-</section>
-
-<section id="contact" class="contact">
+<!-- Footer -->
+<footer class="footer">
   <h2>Contact Us</h2>
-  <p>📧 info.needitgotit@gmail.com</p>
-  <p>📞 407-233-5378</p>
-</section>
-
-<footer>
-  <p>© <span id="year"></span> Need It! Got It! — Professional. Reliable. On-Demand.</p>
+  <div class="contact-info">
+    <p>📧 info.needitgotit@gmail.com</p>
+    <p>📞 (407) 233-5378</p>
+  </div>
 </footer>
 
+<div class="copyright">
+  © 2025 Need It! Got It! – Professional. Reliable. On Demand.
+</div>
+
 <script src="script.js"></script>
-<script>
-  // Set current year
-  document.getElementById('year').textContent = new Date().getFullYear();
-</script>
 </body>
 </html>
