@@ -2,83 +2,46 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Need It? Got It!</title>
-  <link rel="stylesheet" href="style.css"/>
+  <title>NEED IT! GOT IT!</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-<header class="topbar">
-  <img src="images/logo.png" class="logo" alt="Need It Got It Logo">
+<header class="header">
+  <div class="logo">NEED IT! GOT IT!</div>
   <nav>
     <a href="#services">Services</a>
     <a href="#contact">Contact</a>
   </nav>
 </header>
 
-<section class="hero">
-  <div class="hero-text">
-    <h1>
-      <span class="light">Need It?</span><br>
-      <span class="bold">Got It.</span>
-    </h1>
+<main class="container">
+  <h1>Your Essential Services</h1>
 
-    <p class="lead">
-      Reliable, on-demand services built on trust, speed, and professionalism.
-    </p>
+  <a class="tile primary" href="#book">
+    <span>Schedule a Service</span>
+    <small>Book trusted help in minutes</small>
+  </a>
 
-    <p class="sub">
-      When something needs to get done — we show up and deliver.
-    </p>
+  <section class="grid">
+    <div class="tile">Special Offers</div>
+    <div class="tile">Connected Services</div>
+    <div class="tile">Guides & Policies</div>
+    <div class="tile">Service Protection</div>
+    <div class="tile">Prepaid & Priority</div>
+    <div class="tile">Tools & Add-Ons</div>
+  </section>
+</main>
 
-    <div class="buttons">
-      <button class="primary" onclick="scrollToServices()">Get Started</button>
-      <button class="secondary" onclick="scrollToServices()">Our Services</button>
-    </div>
-  </div>
+<button class="emergency" onclick="emergencyAction()">
+  Need it now?
+</button>
 
-  <div class="hero-mascot">
-    <img src="images/mascot.png" alt="Need It Got It Mascot">
-  </div>
-</section>
-
-<section class="trust">
-  <h2>Trusted. Reliable. Professional.</h2>
-  <p>Serving our community with integrity.</p>
-</section>
-
-<section id="services" class="offers">
-  <h2>What We <span>Offer</span></h2>
-
-  <div class="cards">
-    <div class="card">
-      <div class="icon">✉️</div>
-      <h3>Fast Response</h3>
-      <p>We value your time and act quickly when it matters most.</p>
-    </div>
-
-    <div class="card">
-      <div class="icon">💼</div>
-      <h3>Dependable Service</h3>
-      <p>Professional, consistent service you can trust.</p>
-    </div>
-
-    <div class="card">
-      <div class="icon">🧩</div>
-      <h3>Business & Personal Support</h3>
-      <p>Solutions for individuals and businesses alike.</p>
-    </div>
-  </div>
-</section>
-
-<section id="contact" class="contact">
-  <h2>Contact <span>Us</span></h2>
+<footer id="contact">
   <p>📧 info.needitgotit@gmail.com</p>
   <p>📞 407-233-5378</p>
-</section>
-
-<footer>
-  © 2025 Need It! Got It! — Professional. Reliable. On-Demand.
+  <p class="copyright">© 2025 Need It! Got It!</p>
 </footer>
 
 <script src="script.js"></script>
