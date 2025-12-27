@@ -1,3 +1,36 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+}
+
+body {
+  background: #f4f4f4;
+  color: #111;
+}
+
+/* HEADER */
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 50px;
+  background: white;
+}
+
+.logo {
+  height: 42px;
+}
+
+nav a {
+  margin-left: 28px;
+  text-decoration: none;
+  font-weight: 600;
+  color: #222;
+}
+
+/* HERO */
 .hero {
   position: relative;
   min-height: 90vh;
@@ -6,7 +39,155 @@
     linear-gradient(135deg, #8b0000 0%, #ff1e1e 60%),
     radial-gradient(circle at right, rgba(255,255,255,0.08), transparent 40%);
   color: white;
-  overflow: hidden;
   display: flex;
   align-items: center;
+  overflow: hidden;
+}
+
+.hero-text {
+  max-width: 520px;
+  z-index: 2;
+}
+
+.hero h1 {
+  font-size: 72px;
+  line-height: 1.05;
+}
+
+.light {
+  font-weight: 300;
+}
+
+.bold {
+  font-weight: 800;
+  color: #ffd400;
+}
+
+.lead {
+  margin-top: 20px;
+  font-size: 18px;
+}
+
+.sub {
+  margin-top: 10px;
+  font-size: 16px;
+  opacity: 0.95;
+}
+
+.buttons {
+  margin-top: 35px;
+  display: flex;
+  gap: 16px;
+}
+
+button {
+  padding: 14px 28px;
+  font-weight: 700;
+  border-radius: 8px;
+  cursor: pointer;
+  border: none;
+}
+
+.primary {
+  background: #ffd400;
+  color: #111;
+}
+
+.secondary {
+  background: transparent;
+  border: 2px solid white;
+  color: white;
+}
+
+/* MASCOT */
+.hero-mascot {
+  position: absolute;
+  right: 5%;
+  bottom: 0;
+  height: 90%;
+  display: flex;
+  align-items: flex-end;
+}
+
+.hero-mascot img {
+  height: 100%;
+}
+
+/* TRUST */
+.trust {
+  background: #eee;
+  text-align: center;
+  padding: 40px;
+}
+
+/* SERVICES */
+.offers {
+  background: white;
+  padding: 70px 40px;
+  text-align: center;
+}
+
+.offers h2 {
+  font-size: 36px;
+  margin-bottom: 40px;
+}
+
+.offers span {
+  color: #c40000;
+}
+
+.cards {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+}
+
+.card {
+  width: 280px;
+  padding: 30px;
+  background: white;
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+.icon {
+  font-size: 32px;
+  margin-bottom: 10px;
+}
+
+/* CONTACT */
+.contact {
+  padding: 60px 40px;
+  background: linear-gradient(135deg, #111, #c40000);
+  color: white;
+  text-align: center;
+}
+
+.contact span {
+  color: #ffd400;
+}
+
+/* FOOTER */
+footer {
+  background: black;
+  color: white;
+  text-align: center;
+  padding: 14px;
+  font-size: 13px;
+}
+
+/* MOBILE */
+@media (max-width: 900px) {
+  .hero {
+    padding: 60px 30px;
+  }
+
+  .hero-mascot {
+    right: -10%;
+    height: 75%;
+  }
+
+  .cards {
+    flex-direction: column;
+  }
 }
