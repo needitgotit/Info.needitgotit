@@ -1,3 +1,160 @@
+/* ===== RESET ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Inter", Arial, sans-serif;
+  background: #ffffff;
+  color: #111;
+}
+
+/* ===== NAV ===== */
+header.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 28px;
+  background: #fff;
+}
+
+header.nav img {
+  height: 42px;
+}
+
+header.nav nav a {
+  margin-left: 28px;
+  text-decoration: none;
+  font-weight: 500;
+  color: #111;
+}
+
+/* ===== HERO ===== */
+.hero {
+  position: relative;
+  min-height: 90vh;
+  background: linear-gradient(135deg, #b30000 0%, #ff1a1a 100%);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  padding: 0 6%;
+}
+
+/* TEXT COLUMN */
+.hero-text {
+  max-width: 520px;
+  z-index: 2;
+}
+
+.hero-text h1 {
+  font-size: clamp(3.2rem, 6vw, 4.6rem);
+  line-height: 1.05;
+  color: #ffffff;
+  font-weight: 800;
+}
+
+.hero-text h1 strong {
+  color: #ffd400;
+}
+
+.hero-text p {
+  margin-top: 18px;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: #ffffff;
+  max-width: 460px;
+}
+
+/* BUTTONS */
+.hero-buttons {
+  display: flex;
+  gap: 16px;
+  margin-top: 26px;
+}
+
+.hero-buttons button {
+  padding: 14px 26px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  border-radius: 10px;
+  cursor: pointer;
+  border: none;
+}
+
+.hero-buttons button:first-child {
+  background: #ffd400;
+  color: #111;
+}
+
+.hero-buttons button:last-child {
+  background: transparent;
+  color: #fff;
+  border: 2px solid #fff;
+}
+
+/* ===== MASCOT ===== */
+.hero-mascot {
+  position: absolute;
+  right: 3%;
+  bottom: 0;
+  height: 88%;
+  display: flex;
+  align-items: flex-end;
+  z-index: 1;
+}
+
+.hero-mascot img {
+  height: 100%;
+  max-height: 620px;
+  width: auto;
+}
+
+/* ===== TRUST STRIP ===== */
+.trust {
+  background: #f4f4f4;
+  padding: 38px 20px;
+  text-align: center;
+}
+
+.trust h2 {
+  font-size: 1.6rem;
+  font-weight: 800;
+}
+
+.trust p {
+  margin-top: 6px;
+  font-size: 1rem;
+  color: #555;
+}
+
+/* ===== MOBILE FIX ===== */
+@media (max-width: 900px) {
+  .hero {
+    flex-direction: column;
+    justify-content: center;
+    text-align: left;
+    padding-top: 80px;
+  }
+
+  .hero-text {
+    max-width: 100%;
+  }
+
+  .hero-mascot {
+    position: relative;
+    right: auto;
+    height: auto;
+    margin-top: 40px;
+    justify-content: center;
+  }
+
+  .hero-mascot img {
+    max-height: 420px;
+  }
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
