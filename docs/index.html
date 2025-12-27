@@ -2,77 +2,84 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Need It? Got It!</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
 
-<!-- Header -->
-<header class="header">
-  <div class="logo">NEED IT!<br>GOT IT!</div>
-  <nav class="nav">
-    <span>Services</span>
-    <span>Contact</span>
-    <span>🛒</span>
-    <span>👤</span>
+<header class="topbar">
+  <img src="images/logo.png" class="logo" alt="Need It Got It Logo">
+  <nav>
+    <a href="#services">Services</a>
+    <a href="#contact">Contact</a>
   </nav>
 </header>
 
-<!-- Hero Section -->
 <section class="hero">
-  <div class="hero-content">
-    <h1>Need It?<br>Got It.</h1>
-    <p class="tagline">Reliable, on-demand services built on trust, speed, and professionalism.</p>
-    <p>When something needs to get done – we show up and deliver.</p>
-    <button class="btn btn-yellow">Get Started</button>
-    <button class="btn btn-outline">Our Services</button>
+  <div class="hero-text">
+    <h1>
+      <span class="light">Need It?</span><br>
+      <span class="bold">Got It.</span>
+    </h1>
+
+    <p class="lead">
+      Reliable, on-demand services built on trust, speed, and professionalism.
+    </p>
+
+    <p class="sub">
+      When something needs to get done — we show up and deliver.
+    </p>
+
+    <div class="buttons">
+      <button class="primary" onclick="scrollToServices()">Get Started</button>
+      <button class="secondary" onclick="scrollToServices()">Our Services</button>
+    </div>
   </div>
-  <div class="mascot">
-    <img src="images/mascot.png" alt="Cartoon man in red cap and shirt pointing">
-    <div class="mascot-text">NEED IT!<br>GOT IT!</div>
+
+  <div class="hero-mascot">
+    <img src="images/mascot.png" alt="Need It Got It Mascot">
   </div>
 </section>
 
-<!-- Mid Banner -->
-<div class="mid-banner">
-  <p><strong>Trusted. Reliable. Professional.</strong><br>Serving our community with integrity.</p>
-</div>
+<section class="trust">
+  <h2>Trusted. Reliable. Professional.</h2>
+  <p>Serving our community with integrity.</p>
+</section>
 
-<!-- Services Section -->
-<section class="services">
-  <h2>What We Offer</h2>
-  <div class="service-cards">
+<section id="services" class="offers">
+  <h2>What We <span>Offer</span></h2>
+
+  <div class="cards">
     <div class="card">
-      <div>📧</div>
+      <div class="icon">✉️</div>
       <h3>Fast Response</h3>
       <p>We value your time and act quickly when it matters most.</p>
     </div>
+
     <div class="card">
-      <div>💼</div>
+      <div class="icon">💼</div>
       <h3>Dependable Service</h3>
-      <p>Consistent, professional service you can trust every time.</p>
+      <p>Professional, consistent service you can trust.</p>
     </div>
+
     <div class="card">
-      <div>🆘</div>
+      <div class="icon">🧩</div>
       <h3>Business & Personal Support</h3>
-      <p>Solutions designed to help individuals and businesses move forward.</p>
+      <p>Solutions for individuals and businesses alike.</p>
     </div>
   </div>
 </section>
 
-<!-- Footer -->
-<footer class="footer">
-  <h2>Contact Us</h2>
-  <div class="contact-info">
-    <p>📧 info.needitgotit@gmail.com</p>
-    <p>📞 (407) 233-5378</p>
-  </div>
-</footer>
+<section id="contact" class="contact">
+  <h2>Contact <span>Us</span></h2>
+  <p>📧 info.needitgotit@gmail.com</p>
+  <p>📞 407-233-5378</p>
+</section>
 
-<div class="copyright">
-  © 2025 Need It! Got It! – Professional. Reliable. On Demand.
-</div>
+<footer>
+  © 2025 Need It! Got It! — Professional. Reliable. On-Demand.
+</footer>
 
 <script src="script.js"></script>
 </body>
