@@ -1,5 +1,5 @@
-function scrollToServices() {
-  document.getElementById("services")
-    .scrollIntoView({ behavior: "smooth" });
+function emergencyAction() {
+  alert("Emergency request started. Support is being contacted.");
 }
+
 
