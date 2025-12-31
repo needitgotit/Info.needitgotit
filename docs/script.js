@@ -1,26 +1,47 @@
- document.getElementById("bookingForm").addEventListener("submit", async function (e) {
+ document.getElementById("bookingForm").addEventListener("submit", function (e) {
   e.preventDefault();
 
   const formData = new FormData(this);
   const data = Object.fromEntries(formData.entries());
 
-  try {
-    const response = await fetch("/api/book", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(data)
+  // Prepare EmailJS template parameters
+  const templateParamsCustomer = {
+    to_name: data.name,
+    to_email: data.email,
+    service_category: data.category,
+    service_name: data.service,
+    date: data.date,
+    time: data.time,
+    details: data.details || "None",
+  };
+
+  const templateParamsBusiness = {
+    customer_name: data.name,
+    customer_email: data.email,
+    customer_phone: data.phone,
+    service_category: data.category,
+    service_name: data.service,
+    date: data.date,
+    time: data.time,
+    details: data.details || "None",
+  };
+
+  // Send confirmation to customer
+  emailjs.send('YOUR_SERVICE_ID', 'CUSTOMER_TEMPLATE_ID', templateParamsCustomer)
+    .then(() => {
+      console.log("Customer email sent successfully!");
+    }, (err) => {
+      console.error("Customer email error:", err);
     });
 
-    if (response.ok) {
-      alert("Booking submitted successfully! Check your email for confirmation.");
-      this.reset();
-    } else {
-      alert("There was an issue submitting your booking. Please try again.");
-    }
+  // Send copy to business email
+  emailjs.send('YOUR_SERVICE_ID', 'BUSINESS_TEMPLATE_ID', templateParamsBusiness)
+    .then(() => {
+      console.log("Business email sent successfully!");
+    }, (err) => {
+      console.error("Business email error:", err);
+    });
 
-  } catch (error) {
-    alert("Network error. Please try again later.");
-  }
+  alert("Booking submitted successfully! Check your email for confirmation.");
+  this.reset();
 });
