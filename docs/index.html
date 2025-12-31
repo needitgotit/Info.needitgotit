@@ -2,48 +2,162 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>NEED IT! GOT IT!</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="style.css" />
+  <title>Need It! Got It! | Book a Service</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #b5121b;
+      margin: 0;
+      padding: 20px;
+      color: #333;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: #fff;
+      border-radius: 12px;
+      padding: 25px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+    }
+
+    h1 {
+      text-align: center;
+      color: #b5121b;
+      margin-bottom: 10px;
+    }
+
+    p {
+      text-align: center;
+      font-size: 14px;
+      color: #555;
+    }
+
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 15px;
+    }
+
+    select, input, textarea, button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 6px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    button {
+      background: #f5b400;
+      color: #000;
+      font-weight: bold;
+      border: none;
+      margin-top: 20px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #e5a800;
+    }
+
+    .footer-note {
+      font-size: 12px;
+      color: #777;
+      text-align: center;
+      margin-top: 15px;
+    }
+  </style>
 </head>
+
 <body>
 
-<header class="header">
-  <div class="logo">NEED IT! GOT IT!</div>
-  <nav>
-    <a href="#services">Services</a>
-    <a href="#contact">Contact</a>
-  </nav>
-</header>
+<div class="container">
+  <h1>Book a Service</h1>
+  <p>Fast • Reliable • Transparent Pricing</p>
 
-<main class="container">
-  <h1>Your Essential Services</h1>
+  <form id="bookingForm">
 
-  <a class="tile primary" href="#book">
-    <span>Schedule a Service</span>
-    <small>Book trusted help in minutes</small>
-  </a>
+    <label>Full Name</label>
+    <input type="text" name="name" required>
 
-  <section class="grid">
-    <div class="tile">Special Offers</div>
-    <div class="tile">Connected Services</div>
-    <div class="tile">Guides & Policies</div>
-    <div class="tile">Service Protection</div>
-    <div class="tile">Prepaid & Priority</div>
-    <div class="tile">Tools & Add-Ons</div>
-  </section>
-</main>
+    <label>Email Address</label>
+    <input type="email" name="email" required>
 
-<button class="emergency" onclick="emergencyAction()">
-  Need it now?
-</button>
+    <label>Phone Number</label>
+    <input type="tel" name="phone" required>
 
-<footer id="contact">
-  <p>📧 info.needitgotit@gmail.com</p>
-  <p>📞 407-233-5378</p>
-  <p class="copyright">© 2025 Need It! Got It!</p>
-</footer>
+    <label>Service Category</label>
+    <select name="category" required>
+      <option value="">Select a category</option>
+      <option>Home & Property</option>
+      <option>Personal & Care</option>
+      <option>Delivery & Support</option>
+      <option>Events & Promotion</option>
+    </select>
 
-<script src="script.js"></script>
+    <label>Service</label>
+    <select name="service" required>
+      <option value="">Select service</option>
+      <option>Home Cleaning – from $39/hr</option>
+      <option>Window Cleaning – from $34/hr</option>
+      <option>Property Cleaning – from $45/hr</option>
+      <option>Interior Decoration – from $45/hr</option>
+      <option>Babysitting – from $22/hr</option>
+      <option>Dog Walking – from $18/hr</option>
+      <option>Event Staff – from $28/hr</option>
+      <option>Promoter – from $35/hr</option>
+    </select>
+
+    <label>Date</label>
+    <input type="date" name="date" required>
+
+    <label>Preferred Time</label>
+    <select name="time" required>
+      <option value="">Select time</option>
+      <option>Morning (8am–12pm)</option>
+      <option>Afternoon (12pm–4pm)</option>
+      <option>Evening (4pm–8pm)</option>
+    </select>
+
+    <label>Additional Details</label>
+    <textarea name="details" placeholder="Tell us anything we should know…"></textarea>
+
+    <button type="submit">Submit Booking Request</button>
+  </form>
+
+  <div class="footer-note">
+    You’ll receive a confirmation email shortly after submitting.
+  </div>
+</div>
+
+<script>
+document.getElementById("bookingForm").addEventListener("submit", async function(e) {
+  e.preventDefault();
+
+  const formData = Object.fromEntries(new FormData(this));
+
+  const response = await fetch("/api/book", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(formData)
+  });
+
+  if (response.ok) {
+    alert("Booking submitted! Please check your email for confirmation.");
+    this.reset();
+  } else {
+    alert("Something went wrong. Please try again.");
+  }
+});
+</script>
+
 </body>
 </html>
