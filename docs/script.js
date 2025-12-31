@@ -1,36 +1,26 @@
-// server.js
-const express = require("express");
-const nodemailer = require("nodemailer");
+ document.getElementById("bookingForm").addEventListener("submit", async function (e) {
+  e.preventDefault();
 
-const app = express();
-app.use(express.json());
+  const formData = new FormData(this);
+  const data = Object.fromEntries(formData.entries());
 
-app.post("/api/book", async (req, res) => {
-  const data = req.body;
+  try {
+    const response = await fetch("/api/book", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(data)
+    });
 
-  const transporter = nodemailer.createTransport({
-    service: "Gmail",
-    auth: {
-      user: "yourbusiness@gmail.com",
-      pass: "APP_PASSWORD"
+    if (response.ok) {
+      alert("Booking submitted successfully! Check your email for confirmation.");
+      this.reset();
+    } else {
+      alert("There was an issue submitting your booking. Please try again.");
     }
-  });
 
-  const mailOptions = {
-    from: "Need It! Got It! <yourbusiness@gmail.com>",
-    to: data.email,
-    subject: "Booking Confirmation – Need It! Got It!",
-    html: `
-      <h2>Booking Confirmed</h2>
-      <p><strong>Service:</strong> ${data.service}</p>
-      <p><strong>Date:</strong> ${data.date}</p>
-      <p><strong>Time:</strong> ${data.time}</p>
-      <p>We’ll contact you shortly to finalize details.</p>
-    `
-  };
-
-  await transporter.sendMail(mailOptions);
-  res.status(200).send("Booking received");
+  } catch (error) {
+    alert("Network error. Please try again later.");
+  }
 });
-
-app.listen(3000, () => console.log("Server running"));
