@@ -1,17 +1,16 @@
- <!DOCTYPE html>
+  <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <title>Need It! Got It! | Book a Service</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <link rel="stylesheet" href="style.css">
 
   <!-- EmailJS SDK -->
-  <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
-  <script>
-    (function(){
-      emailjs.init('FXWP_J3nBQ3lIU5qg'); // Replace with your EmailJS public key
+  <script type="text/javascript" src="https://cdn.emailjs.com/dist/email.min.js"></script>
+  <script type="text/javascript">
+    (function() {
+      emailjs.init("SU4xs5Go_As6GQEfL"); 
     })();
   </script>
 </head>
@@ -23,7 +22,6 @@
     <p class="subtitle">Fast • Reliable • Transparent Pricing</p>
 
     <form id="bookingForm">
-
       <label>Full Name</label>
       <input type="text" name="name" required>
 
@@ -45,14 +43,14 @@
       <label>Service</label>
       <select name="service" required>
         <option value="">Select service</option>
-        <option>Home Cleaning – from $39/hr</option>
-        <option>Window Cleaning – from $34/hr</option>
-        <option>Property Cleaning – from $45/hr</option>
-        <option>Interior Decoration – from $45/hr</option>
-        <option>Babysitting – from $22/hr</option>
-        <option>Dog Walking – from $18/hr</option>
-        <option>Event Staff – from $28/hr</option>
-        <option>Promoter – from $35/hr</option>
+        <option>Home Cleaning</option>
+        <option>Window Cleaning</option>
+        <option>Property Cleaning</option>
+        <option>Interior Decoration</option>
+        <option>Babysitting</option>
+        <option>Dog Walking</option>
+        <option>Event Staff</option>
+        <option>Promoter</option>
       </select>
 
       <label>Date</label>
@@ -70,7 +68,6 @@
       <textarea name="details" placeholder="Tell us anything we should know..."></textarea>
 
       <button type="submit">Submit Booking</button>
-
     </form>
 
     <p class="footer-note">
