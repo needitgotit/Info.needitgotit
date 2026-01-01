@@ -4,7 +4,7 @@
   const formData = new FormData(this);
   const data = Object.fromEntries(formData.entries());
 
-  // Customer email — must match template variables exactly
+  // Customer email — matches template variables
   const templateParamsCustomer = {
     name: data.name,
     service: data.service,
@@ -14,21 +14,21 @@
     to_email: data.email  // customer email
   };
 
-  // Business email — same template, send to your business email
+  // Business email — same template, matches template variables
   const templateParamsBusiness = {
     name: data.name,
     service: data.service,
     date: data.date,
     time: data.time,
     details: data.details || "None",
-    to_email: "info.needitgotit@gmail.com"  // your business email
+    to_email: "info.needitgotit@gmail.com"  // business email
   };
 
   const submitBtn = this.querySelector("button[type='submit']");
   submitBtn.disabled = true;
   submitBtn.textContent = "Submitting...";
 
-  // Send both emails
+  // Send both emails using EmailJS
   Promise.all([
     emailjs.send('service_tpy3o7q', 'template_7j2yea8', templateParamsCustomer)
       .then(() => console.log("Customer email sent"))
