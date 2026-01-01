@@ -1,32 +1,25 @@
  document.getElementById("bookingForm").addEventListener("submit", function (e) {
   e.preventDefault();
-
   const formData = new FormData(this);
   const data = Object.fromEntries(formData.entries());
 
-  // Customer email template parameters
+  // Prepare actual values for EmailJS (must match template variables)
   const templateParamsCustomer = {
-    to_name: data.name,
-    to_email: data.email,
-    service_category: data.category,
-    service_name: data.service,
-    date: data.date,
-    time: data.time,
-    details: data.details || "None",
+    name: data.name,                   // matches {{name}} in template
+    service: data.service,             // matches {{service}}
+    date: data.date,                   // matches {{date}}
+    time: data.time,                   // matches {{time}}
+    details: data.details || "None",   // matches {{details}}
+    to_email: data.email               // matches {{to_email}} field in template
   };
 
-  // Business email template parameters
   const templateParamsBusiness = {
-    to_name: "Need It! Got It!",             // Business display name
-    to_email: "info.needitgotit@gmail.com", // Your business email
-    customer_name: data.name,
-    customer_email: data.email,
-    customer_phone: data.phone,
-    service_category: data.category,
-    service_name: data.service,
+    name: data.name,
+    service: data.service,
     date: data.date,
     time: data.time,
     details: data.details || "None",
+    to_email: "info.needitgotit@gmail.com"  // your business email
   };
 
   const submitBtn = this.querySelector("button[type='submit']");
