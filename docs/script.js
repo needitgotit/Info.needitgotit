@@ -4,25 +4,26 @@
   const formData = new FormData(this);
   const data = Object.fromEntries(formData.entries());
 
-  // Customer email (matches EmailJS template variables)
-  const templateParamsCustomer = {
-    name: data.name,
-    service: data.service,
-    date: data.date,
-    time: data.time,
-    details: data.details || "None",
-    to_email: data.email
-  };
+  // Customer email (matches EmailJS template const templateParamsCustomer = {
+  name: data.name,
+  service: data.service,
+  date: data.date,
+  time: data.time,
+  details: data.details || "None",
+  to_email: data.email,
+  reply_to: data.email
+};
 
-  // Business email copy
-  const templateParamsBusiness = {
-    name: data.name,
-    service: data.service,
-    date: data.date,
-    time: data.time,
-    details: data.details || "None",
-    to_email: "info.needitgotit@gmail.com"
-  };
+const templateParamsBusiness = {
+  name: data.name,
+  service: data.service,
+  date: data.date,
+  time: data.time,
+  details: data.details || "None",
+  to_email: "info.needitgotit@gmail.com",
+  reply_to: data.email
+};
+
 
   const submitBtn = this.querySelector("button[type='submit']");
   submitBtn.disabled = true;
