@@ -31,7 +31,7 @@
 
   // Send both emails in parallel
   Promise.all([
-    emailjs.send('service_tpy3o7q', 'CUSTOMER_TEMPLATE_ID', templateParamsCustomer)
+    emailjs.send('service_tpy3o7q', 'template_7j2yea8', templateParamsCustomer)
       .then(() => console.log("Customer email sent"))
       .catch(err => console.error("Customer email error:", err)),
     emailjs.send('YOUR_SERVICE_ID', 'BUSINESS_TEMPLATE_ID', templateParamsBusiness)
