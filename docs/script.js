@@ -1,20 +1,20 @@
-   document.getElementById("bookingForm").addEventListener("submit", function (e) {
+  document.getElementById("bookingForm").addEventListener("submit", function (e) {
   e.preventDefault();
 
   const formData = new FormData(this);
   const data = Object.fromEntries(formData.entries());
 
-  // --- Customer email ---
+  // Customer email — must match template variables exactly
   const templateParamsCustomer = {
-    name: data.name,                   // must match {{name}} in template
-    service: data.service,             // must match {{service}}
-    date: data.date,                   // must match {{date}}
-    time: data.time,                   // must match {{time}}
-    details: data.details || "None",   // must match {{details}}
-    to_email: data.email               // must match {{to_email}} in template
+    name: data.name,
+    service: data.service,
+    date: data.date,
+    time: data.time,
+    details: data.details || "None",
+    to_email: data.email  // customer email
   };
 
-  // --- Business email ---
+  // Business email — same template, send to your business email
   const templateParamsBusiness = {
     name: data.name,
     service: data.service,
@@ -28,7 +28,7 @@
   submitBtn.disabled = true;
   submitBtn.textContent = "Submitting...";
 
-  // Send both emails in parallel
+  // Send both emails
   Promise.all([
     emailjs.send('service_tpy3o7q', 'template_7j2yea8', templateParamsCustomer)
       .then(() => console.log("Customer email sent"))
