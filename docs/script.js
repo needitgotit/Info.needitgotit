@@ -34,7 +34,7 @@
     emailjs.send('service_tpy3o7q', 'template_7j2yea8', templateParamsCustomer)
       .then(() => console.log("Customer email sent"))
       .catch(err => console.error("Customer email error:", err)),
-    emailjs.send('YOUR_SERVICE_ID', 'BUSINESS_TEMPLATE_ID', templateParamsBusiness)
+    emailjs.send('service_tpy3o7q', 'template_7j2yea8', templateParamsBusiness)
       .then(() => console.log("Business email sent"))
       .catch(err => console.error("Business email error:", err))
   ])
