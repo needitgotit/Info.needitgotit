@@ -4,25 +4,26 @@
   const formData = new FormData(this);
   const data = Object.fromEntries(formData.entries());
 
-  // Customer email — matches template variables
-  const templateParamsCustomer = {
-    name: data.name,
-    service: data.service,
-    date: data.date,
-    time: data.time,
-    details: data.details || "None",
-    to_email: data.email  // customer email
-  };
+  // Customer email test
+const templateParamsCustomer = {
+  name: "Test User",
+  service: "Test Service",
+  date: "2026-01-01",
+  time: "12:00 PM",
+  details: "Test details",
+  to_email: "yourpersonalemail@gmail.com"  // replace with your real test email
+};
 
-  // Business email — same template, matches template variables
-  const templateParamsBusiness = {
-    name: data.name,
-    service: data.service,
-    date: data.date,
-    time: data.time,
-    details: data.details || "None",
-    to_email: "info.needitgotit@gmail.com"  // business email
-  };
+// Business email test
+const templateParamsBusiness = {
+  name: "Test User",
+  service: "Test Service",
+  date: "2026-01-01",
+  time: "12:00 PM",
+  details: "Test details",
+  to_email: "info.needitgotit@gmail.com"
+};
+
 
   const submitBtn = this.querySelector("button[type='submit']");
   submitBtn.disabled = true;
