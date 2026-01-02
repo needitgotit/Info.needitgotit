@@ -10,7 +10,7 @@
   <script type="text/javascript" src="https://cdn.emailjs.com/dist/email.min.js"></script>
   <script type="text/javascript">
     (function() {
-      emailjs.init("SU4xs5Go_As6GQEfL"); 
+      emailjs.init("SU4xs5Go_As6GQEfL"); // <-- Keep your User ID here
     })();
   </script>
 </head>
@@ -21,7 +21,7 @@
     <h1>Book a Service</h1>
     <p class="subtitle">Fast • Reliable • Transparent Pricing</p>
 
-   <form action="https://formspree.io/f/xzdzrwea" method="POST">
+    <form id="booking-form">
 
       <label>Full Name</label>
       <input type="text" name="name" required>
@@ -44,14 +44,37 @@
       <label>Service</label>
       <select name="service" required>
         <option value="">Select service</option>
-        <option>Home Cleaning</option>
-        <option>Window Cleaning</option>
-        <option>Property Cleaning</option>
-        <option>Interior Decoration</option>
-        <option>Babysitting</option>
-        <option>Dog Walking</option>
-        <option>Event Staff</option>
-        <option>Promoter</option>
+
+        <optgroup label="HOME & PROPERTY SERVICES">
+          <option>Home Cleaning</option>
+          <option>Window Cleaning</option>
+          <option>Property Cleaning</option>
+          <option>Interior Decoration</option>
+        </optgroup>
+
+        <optgroup label="PERSONAL & CARE">
+          <option>Babysitting</option>
+          <option>Dog Walking</option>
+          <option>Personal Shopper</option>
+          <option>Assistant</option>
+          <option>Friendship</option>
+          <option>FREE</option>
+        </optgroup>
+
+        <optgroup label="DELIVERY & SUPPORT">
+          <option>Vocalist</option>
+          <option>Songwriting</option>
+          <option>Model</option>
+          <option>Clothing Stylist</option>
+          <option>Food Reviewer</option>
+        </optgroup>
+
+        <optgroup label="EVENTS & PROMOTION">
+          <option>Event Staff</option>
+          <option>Cater Help</option>
+          <option>Promoter</option>
+          <option>Sales</option>
+        </optgroup>
       </select>
 
       <label>Date</label>
@@ -71,11 +94,30 @@
       <button type="submit">Submit Booking</button>
     </form>
 
+    <div id="form-status" style="margin-top:1rem;color:green;"></div>
+
     <p class="footer-note">
       You’ll receive a confirmation email after submitting.
     </p>
   </div>
 
-  <script src="script.js"></script>
+  <script>
+    // EmailJS form submission
+    document.getElementById("booking-form").addEventListener("submit", function(event) {
+      event.preventDefault();
+      const form = this;
+      const status = document.getElementById("form-status");
+
+      emailjs.sendForm("service_tpy3o7q", "template_7j2yea8", form) // <-- Replace these
+        .then(function() {
+          status.innerHTML = "Thanks! Your booking was submitted successfully ✅";
+          form.reset();
+        }, function(error) {
+          console.error("EmailJS error:", error);
+          status.innerHTML = "Oops! Something went wrong. Please try again.";
+        });
+    });
+  </script>
+
 </body>
 </html>
