@@ -10,7 +10,7 @@
   <script type="text/javascript" src="https://cdn.emailjs.com/dist/email.min.js"></script>
   <script type="text/javascript">
     (function() {
-      emailjs.init("SU4xs5Go_As6GQEfL"); // <-- Keep your User ID here
+      emailjs.init("SU4xs5Go_As6GQEfL"); // 
     })();
   </script>
 </head>
@@ -108,7 +108,7 @@
       const form = this;
       const status = document.getElementById("form-status");
 
-      emailjs.sendForm("service_tpy3o7q", "template_7j2yea8", form) // <-- Replace these
+      emailjs.sendForm("service_tpy3o7q", "template_7j2yea8", form) // 
         .then(function() {
           status.innerHTML = "Thanks! Your booking was submitted successfully ✅";
           form.reset();
