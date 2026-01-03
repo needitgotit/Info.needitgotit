@@ -1,4 +1,4 @@
-  <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -7,16 +7,9 @@
   <link rel="stylesheet" href="style.css">
 
   <!-- EmailJS SDK -->
-  <script type="text/javascript" src="https://cdn.emailjs.com/dist/email.min.js"></script>
-  <script type="text/javascript">
-  (function () {
-    emailjs.init({
-      publicKey: "SU4xs5Go_As6GQEfL",
-    });
-  })();
-</script>
- // 
-    })();
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <script>
+    emailjs.init("SU4xs5Go_As6GQEfL");
   </script>
 </head>
 
@@ -26,7 +19,7 @@
     <h1>Book a Service</h1>
     <p class="subtitle">Fast • Reliable • Transparent Pricing</p>
 
-    <form id="booking-form">
+    <form id="bookingForm">
 
       <label>Full Name</label>
       <input type="text" name="name" required>
@@ -99,35 +92,13 @@
       <button type="submit">Submit Booking</button>
     </form>
 
-    <div id="form-status" style="margin-top:1rem;color:green;"></div>
-
     <p class="footer-note">
       You’ll receive a confirmation email after submitting.
     </p>
   </div>
 
-  <script>
-    // EmailJS form submission
-    document.getElementById("booking-form").addEventListener("submit", function(event) {
-      event.preventDefault();
-      const form = this;
-      const status = document.getElementById("form-status");
-
-      emailjs.sendForm(
-  "service_tpy3o7q",
-  "template_7j2yea8",
-  "#booking-form"
-)
- // 
-        .then(function() {
-          status.innerHTML = "Thanks! Your booking was submitted successfully ✅";
-          form.reset();
-        }, function(error) {
-          console.error("EmailJS error:", error);
-          status.innerHTML = "Oops! Something went wrong. Please try again.";
-        });
-    });
-  </script>
+  <!-- External JS -->
+  <script src="script.js"></script>
 
 </body>
 </html>
