@@ -113,7 +113,12 @@
       const form = this;
       const status = document.getElementById("form-status");
 
-      emailjs.sendForm("service_tpy3o7q", "template_7j2yea8", form) // 
+      emailjs.sendForm(
+  "service_tpy3o7q",
+  "template_7j2yea8",
+  "#booking-form"
+)
+ // 
         .then(function() {
           status.innerHTML = "Thanks! Your booking was submitted successfully ✅";
           form.reset();
