@@ -5,8 +5,8 @@ document.getElementById("bookingForm").addEventListener("submit", function (e) {
   const data = Object.fromEntries(formData.entries());
 
   const templateParams = {
+    to_email: data.email,        // 🔑 REQUIRED
     name: data.name,
-    email: data.email,
     phone: data.phone,
     category: data.category,
     service: data.service,
