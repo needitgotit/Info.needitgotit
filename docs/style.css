@@ -5,8 +5,10 @@
   background: #b5121b;
 }
 h1 {
-  font-family: Impact, Haettenschweiler, "Arial Black", sans-serif;
+  font-family: 'Anton', Impact, Haettenschweiler, "Arial Black", sans-serif;
+  letter-spacing: 1px;
 }
+
 .container {
   max-width: 600px;
   margin: auto;
