@@ -1,4 +1,19 @@
- // ==========================
+// ==========================
+// 0️⃣ Quick Supabase Connection Test
+// ==========================
+(async () => {
+  try {
+    const { data, error } = await supabase.from("bookings").select("*").limit(1);
+    if (error) throw error;
+    console.log("Supabase connection successful! Sample booking data:", data);
+    alert("✅ Supabase connection successful!");
+  } catch (err) {
+    console.error("Supabase connection failed:", err.message);
+    alert("❌ Supabase connection failed: " + err.message);
+  }
+})();
+
+// ==========================
 // 1️⃣ Supabase Setup
 // ==========================
 const SUPABASE_URL = "https://kuabmauutjchvvrfycxk.supabase.co";
