@@ -37,3 +37,13 @@ document.getElementById("bookingForm").addEventListener("submit", function (e) {
     submitBtn.textContent = "Submit Booking";
   });
 });
+// TERMS & CONDITIONS ENFORCEMENT
+const form = document.getElementById("bookingForm");
+const agreeCheckbox = document.getElementById("agreeTerms");
+
+form.addEventListener("submit", function (e) {
+  if (!agreeCheckbox.checked) {
+    e.preventDefault();
+    alert("You must agree to the Terms & Conditions before submitting.");
+  }
+});
