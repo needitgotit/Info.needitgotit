@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -6,13 +6,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="style.css">
   <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
-</head>
 
   <!-- EmailJS SDK -->
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
   <script>
     emailjs.init("SU4xs5Go_As6GQEfL");
   </script>
+
+  <!-- Supabase SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/supabase.min.js"></script>
 </head>
 
 <body>
@@ -33,7 +35,7 @@
       <input type="tel" name="phone" required>
 
       <label>Service Category</label>
-      <select name="category" required>
+      <select name="category" id="categorySelect" required>
         <option value="">Select category</option>
         <option>Home & Property</option>
         <option>Personal & Care</option>
@@ -42,125 +44,88 @@
       </select>
 
       <label>Service</label>
-      <select name="service" required>
+      <select name="service" id="serviceSelect" required>
         <option value="">Select service</option>
-
         <optgroup label="HOME & PROPERTY SERVICES">
-          <option>Home Cleaning</option>
-          <option>Window Cleaning</option>
-          <option>Property Cleaning</option>
-          <option>Interior Decoration</option>
+          <option value="Home Cleaning - Standard">Home Cleaning - Standard</option>
+          <option value="Home Cleaning - Deep">Home Cleaning - Deep</option>
+          <option value="Home Cleaning - Move-In/Move-Out">Home Cleaning - Move-In/Move-Out</option>
+          <option value="Window Cleaning - Small">Window Cleaning - Small</option>
+          <option value="Window Cleaning - Medium">Window Cleaning - Medium</option>
+          <option value="Window Cleaning - Large">Window Cleaning - Large</option>
+          <option value="Property Cleaning">Property Cleaning</option>
+          <option value="Interior Decoration">Interior Decoration</option>
         </optgroup>
-
         <optgroup label="PERSONAL & CARE">
-          <option>Babysitting</option>
-          <option>Dog Walking</option>
-          <option>Personal Shopper</option>
-          <option>Assistant</option>
-          <option>Delivery Assistance*</option>
-          <option>Etc.</option>
+          <option value="Babysitting - Short">Babysitting - Short</option>
+          <option value="Babysitting - Typical">Babysitting - Typical</option>
+          <option value="Babysitting - Full Day">Babysitting - Full Day</option>
+          <option value="Dog Walking">Dog Walking</option>
+          <option value="Personal Shopper">Personal Shopper</option>
+          <option value="Assistant">Assistant</option>
+          <option value="Delivery Assistance">Delivery Assistance</option>
         </optgroup>
-
         <optgroup label="CREATIVE & MEDIA">
-          <option>Vocalist</option>
-          <option>Songwriting</option>
-          <option>Model</option>
-          <option>Clothing Stylist</option>
-          <option>Food Reviewer</option>
+          <option value="Vocalist">Vocalist</option>
+          <option value="Songwriting">Songwriting</option>
+          <option value="Model">Model</option>
+          <option value="Clothing Stylist">Clothing Stylist</option>
+          <option value="Food Reviewer">Food Reviewer</option>
         </optgroup>
-
         <optgroup label="EVENTS & PROMOTION">
-          <option>Event Staff</option>
-          <option>Cater Help</option>
-          <option>Promoter</option>
-          <option>Sales</option>
+          <option value="Event Staff">Event Staff</option>
+          <option value="Cater Help">Cater Help</option>
+          <option value="Promoter">Promoter</option>
+          <option value="Sales">Sales</option>
         </optgroup>
       </select>
 
       <label>Date</label>
-      <input type="date" name="date" required>
+      <input type="date" name="date" id="dateInput" required>
 
       <label>Preferred Time</label>
-      <select name="time" required>
+      <select name="time" id="timeSelect" required>
         <option value="">Select time</option>
-        <option>Morning (8am – 12pm)</option>
-        <option>Afternoon (12pm – 4pm)</option>
-        <option>Evening (4pm – 8pm)</option>
       </select>
 
       <label>Additional Details</label>
       <textarea name="details" placeholder="Tell us anything we should know..."></textarea>
+
       <!-- TERMS & CONDITIONS AGREEMENT -->
-<div style="margin-top:20px; font-size:13px;">
-  <details style="margin-bottom:10px;">
-    <summary style="cursor:pointer; font-weight:bold;">
-      Read Terms & Conditions
-    </summary>
+      <div style="margin-top:20px; font-size:13px;">
+        <details style="margin-bottom:10px;">
+          <summary style="cursor:pointer; font-weight:bold;">Read Terms & Conditions</summary>
+          <div style="max-height:220px; overflow-y:auto; padding:10px; border:1px solid #ccc; border-radius:6px; background:#fafafa;">
+            <h3>TERMS & CONDITIONS – Need It! Got It! (Global Services)</h3>
+            <p><strong>Effective Date:</strong> 01/01/2026</p>
+            <p>These Terms & Conditions (“Agreement”) govern all bookings, services, and interactions with <strong>Need It! Got It!</strong> (“we,” “us,” or “our”).</p>
+            <p><strong>Entity Status & Continuity Clause:</strong> Currently operated by <strong>James Brown, an individual</strong>. Rights and obligations transfer automatically to any successor entity.</p>
+            <p><strong>Scope of Services:</strong> Home & property, personal & care, creative & media, events & promotional services. Booking submission is a request only.</p>
+            <p><strong>Bookings & Confirmation:</strong> Email confirmation confirms receipt only. No obligation until service details are approved.</p>
+            <p><strong>Refund Policy:</strong> All sales final unless otherwise stated in writing.</p>
+            <p><strong>Risk Assumption:</strong> Client voluntarily assumes all service risks to the maximum extent permitted by Florida law.</p>
+            <p><strong>Independent Providers:</strong> Some services may be performed by independent contractors; Need It! Got It! is not liable beyond reasonable coordination.</p>
+            <p><strong>Limitation of Liability:</strong> Liability shall not exceed the amount paid for the service.</p>
+            <p><strong>Indemnification:</strong> Client indemnifies Need It! Got It. from all claims.</p>
+            <p><strong>Force Majeure:</strong> Not liable for delays due to uncontrollable events.</p>
+            <p><strong>Arbitration:</strong> Binding arbitration in Florida; client waives class action rights.</p>
+            <p><strong>Governing Law:</strong> Florida law applies.</p>
+          </div>
+        </details>
 
-    <div style="max-height:220px; overflow-y:auto; padding:10px; border:1px solid #ccc; border-radius:6px; background:#fafafa;">
-
-      <h3>TERMS & CONDITIONS – Need It! Got It! (Global Services)</h3>
-      <p><strong>Effective Date:</strong> 01/01/2026</p>
-
-      <p>
-        These Terms & Conditions (“Agreement”) govern all bookings, services, and interactions with
-        <strong>Need It! Got It!</strong> (“Need It! Got It!”, “we,” “us,” or “our”).
-      </p>
-
-      <p>
-        <strong>Entity Status & Continuity Clause:</strong><br>
-        Need It! Got It! is currently operated by <strong>James Brown, an individual</strong>, and may later be
-        operated by a limited liability company or other legal entity. Upon formation, all rights,
-        obligations, and protections under this Agreement shall automatically transfer to the successor
-        entity without further notice or consent.
-      </p>
-
-      <p><strong>Scope of Services:</strong> Services include home & property, personal & care, creative & media,
-      and events & promotional services. Submission of a booking is a request only and not a guarantee
-      of service.</p>
-
-      <p><strong>Bookings & Confirmation:</strong> Email confirmation confirms receipt only. No obligation exists
-      until service details are approved.</p>
-
-      <p><strong>Refund Policy:</strong> All sales are final unless stated otherwise in writing. No refunds for
-      same-day cancellations, no-shows, or completed services.</p>
-
-      <p><strong>Risk Assumption:</strong> Client acknowledges services may involve inherent risks and voluntarily
-      assumes all such risks to the maximum extent permitted by Florida law.</p>
-
-      <p><strong>Independent Providers:</strong> Some services may be performed by independent contractors. Need It!
-      Got It! is not liable for acts beyond reasonable coordination.</p>
-
-      <p><strong>Limitation of Liability:</strong> Liability shall not exceed the amount paid for the service at issue.</p>
-
-      <p><strong>Indemnification:</strong> Client agrees to indemnify and hold harmless Need It! Got It! from all claims.</p>
-
-      <p><strong>Force Majeure:</strong> We are not liable for delays caused by events beyond reasonable control.</p>
-
-      <p><strong>Arbitration:</strong> All disputes shall be resolved by binding arbitration in Florida. Client waives
-      participation in class actions.</p>
-
-      <p><strong>Governing Law:</strong> Florida law applies.</p>
-
-    </div>
-  </details>
-
-  <label style="display:flex; align-items:flex-start; gap:8px;">
-    <input type="checkbox" id="agreeTerms" required>
-    <span>I have read and agree to the Terms & Conditions</span>
-  </label>
-</div>
+        <label style="display:flex; align-items:flex-start; gap:8px;">
+          <input type="checkbox" id="agreeTerms" required>
+          <span>I have read and agree to the Terms & Conditions</span>
+        </label>
+      </div>
 
       <button type="submit">Submit Booking</button>
     </form>
 
-    <p class="footer-note">
-      You’ll receive a confirmation email after submitting.
-    </p>
+    <p class="footer-note">You’ll receive a confirmation email after submitting.</p>
   </div>
 
   <!-- External JS -->
   <script src="script.js"></script>
-
 </body>
 </html>
