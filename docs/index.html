@@ -6,25 +6,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="style.css">
   <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
-
-  <!-- EmailJS SDK -->
-  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-  <script>
-    emailjs.init("SU4xs5Go_As6GQEfL");
-  </script>
-
-  <!-- Supabase SDK -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/supabase.min.js"></script>
 </head>
 
 <body>
-
   <div class="container">
     <h1>BOOK A SERVICE✨</h1>
     <p class="subtitle">Fast • Reliable • Transparent Pricing</p>
 
     <form id="bookingForm">
-
       <label>Full Name</label>
       <input type="text" name="name" required>
 
@@ -35,7 +24,7 @@
       <input type="tel" name="phone" required>
 
       <label>Service Category</label>
-      <select name="category" id="categorySelect" required>
+      <select name="category" required>
         <option value="">Select category</option>
         <option>Home & Property</option>
         <option>Personal & Care</option>
@@ -47,36 +36,31 @@
       <select name="service" id="serviceSelect" required>
         <option value="">Select service</option>
         <optgroup label="HOME & PROPERTY SERVICES">
-          <option value="Home Cleaning - Standard">Home Cleaning - Standard</option>
-          <option value="Home Cleaning - Deep">Home Cleaning - Deep</option>
-          <option value="Home Cleaning - Move-In/Move-Out">Home Cleaning - Move-In/Move-Out</option>
-          <option value="Window Cleaning - Small Home">Window Cleaning - Small Home</option>
-          <option value="Window Cleaning - Medium Home">Window Cleaning - Medium Home</option>
-          <option value="Window Cleaning - Large Home">Window Cleaning - Large Home</option>
-          <option value="Property Cleaning">Property Cleaning</option>
-          <option value="Interior Decoration">Interior Decoration</option>
+          <option>Home Cleaning</option>
+          <option>Window Cleaning</option>
+          <option>Property Cleaning</option>
+          <option>Interior Decoration</option>
         </optgroup>
         <optgroup label="PERSONAL & CARE">
-          <option value="Babysitting - Short">Babysitting - Short</option>
-          <option value="Babysitting - Typical">Babysitting - Typical</option>
-          <option value="Babysitting - Full Day">Babysitting - Full Day</option>
-          <option value="Dog Walking">Dog Walking</option>
-          <option value="Personal Shopper">Personal Shopper</option>
-          <option value="Assistant">Assistant</option>
-          <option value="Delivery Assistance">Delivery Assistance</option>
+          <option>Babysitting</option>
+          <option>Dog Walking</option>
+          <option>Personal Shopper</option>
+          <option>Assistant</option>
+          <option>Delivery Assistance*</option>
+          <option>Etc.</option>
         </optgroup>
         <optgroup label="CREATIVE & MEDIA">
-          <option value="Vocalist">Vocalist</option>
-          <option value="Songwriting">Songwriting</option>
-          <option value="Model">Model</option>
-          <option value="Clothing Stylist">Clothing Stylist</option>
-          <option value="Food Reviewer">Food Reviewer</option>
+          <option>Vocalist</option>
+          <option>Songwriting</option>
+          <option>Model</option>
+          <option>Clothing Stylist</option>
+          <option>Food Reviewer</option>
         </optgroup>
         <optgroup label="EVENTS & PROMOTION">
-          <option value="Event Staff">Event Staff</option>
-          <option value="Cater Help">Cater Help</option>
-          <option value="Promoter">Promoter</option>
-          <option value="Sales">Sales</option>
+          <option>Event Staff</option>
+          <option>Cater Help</option>
+          <option>Promoter</option>
+          <option>Sales</option>
         </optgroup>
       </select>
 
@@ -84,9 +68,9 @@
       <input type="date" name="date" id="dateInput" required>
 
       <label>Preferred Time</label>
-<select name="time" id="timeSelect" required>
-  <option value="">Select time</option>
-</select>
+      <select name="time" id="timeSelect" required>
+        <option value="">Select time</option>
+      </select>
 
       <label>Additional Details</label>
       <textarea name="details" placeholder="Tell us anything we should know..."></textarea>
@@ -98,21 +82,20 @@
           <div style="max-height:220px; overflow-y:auto; padding:10px; border:1px solid #ccc; border-radius:6px; background:#fafafa;">
             <h3>TERMS & CONDITIONS – Need It! Got It! (Global Services)</h3>
             <p><strong>Effective Date:</strong> 01/01/2026</p>
-            <p>These Terms & Conditions (“Agreement”) govern all bookings, services, and interactions with <strong>Need It! Got It!</strong> (“we,” “us,” or “our”).</p>
-            <p><strong>Entity Status & Continuity Clause:</strong> Currently operated by <strong>James Brown, an individual</strong>. Rights and obligations transfer automatically to any successor entity.</p>
-            <p><strong>Scope of Services:</strong> Home & property, personal & care, creative & media, events & promotional services. Booking submission is a request only.</p>
-            <p><strong>Bookings & Confirmation:</strong> Email confirmation confirms receipt only. No obligation until service details are approved.</p>
-            <p><strong>Refund Policy:</strong> All sales final unless otherwise stated in writing.</p>
-            <p><strong>Risk Assumption:</strong> Client voluntarily assumes all service risks to the maximum extent permitted by Florida law.</p>
-            <p><strong>Independent Providers:</strong> Some services may be performed by independent contractors; Need It! Got It! is not liable beyond reasonable coordination.</p>
-            <p><strong>Limitation of Liability:</strong> Liability shall not exceed the amount paid for the service.</p>
-            <p><strong>Indemnification:</strong> Client indemnifies Need It! Got It. from all claims.</p>
-            <p><strong>Force Majeure:</strong> Not liable for delays due to uncontrollable events.</p>
-            <p><strong>Arbitration:</strong> Binding arbitration in Florida; client waives class action rights.</p>
-            <p><strong>Governing Law:</strong> Florida law applies.</p>
+            <p>These Terms & Conditions (“Agreement”) govern all bookings, services, and interactions with
+            <strong>Need It! Got It!</strong> (“we,” “us,” or “our”).</p>
+            <p><strong>Entity Status & Continuity:</strong> Operated by <strong>James Brown</strong>, later by LLC. Rights & obligations transfer automatically.</p>
+            <p><strong>Scope of Services:</strong> Home & property, personal & care, creative & media, events & promotion. Booking is a request, not guaranteed.</p>
+            <p><strong>Bookings & Confirmation:</strong> Email confirms receipt only. Service confirmed only after approval.</p>
+            <p><strong>Refund Policy:</strong> All sales final unless stated. No refunds for same-day cancellations, no-shows, or completed services.</p>
+            <p><strong>Risk Assumption:</strong> Client assumes all inherent risks per Florida law.</p>
+            <p><strong>Independent Providers:</strong> Some services by contractors; limited liability.</p>
+            <p><strong>Limitation of Liability:</strong> Liability ≤ service payment.</p>
+            <p><strong>Indemnification:</strong> Client indemnifies Need It! Got It!</p>
+            <p><strong>Force Majeure:</strong> Not liable for uncontrollable delays.</p>
+            <p><strong>Arbitration & Governing Law:</strong> Binding arbitration in Florida; Florida law applies.</p>
           </div>
         </details>
-
         <label style="display:flex; align-items:flex-start; gap:8px;">
           <input type="checkbox" id="agreeTerms" required>
           <span>I have read and agree to the Terms & Conditions</span>
@@ -125,7 +108,8 @@
     <p class="footer-note">You’ll receive a confirmation email after submitting.</p>
   </div>
 
-  <!-- External JS -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
   <script src="script.js"></script>
 </body>
 </html>
