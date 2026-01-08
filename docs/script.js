@@ -3,7 +3,7 @@
 // ==========================
 const SUPABASE_URL = "https://kuabmauutjchvvrfycxk.supabase.co";
 const SUPABASE_KEY = "sb_publishable_vD1UPjBTrWOXumJ8Z5vF-A_4Vt16Byg";
-const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const supabase = supabase.createClient(https://kuabmauutjchvvrfycxk.supabase.co, sb_publishable_vD1UPjBTrWOXumJ8Z5vF-A_4Vt16Byg);
 
 // ==========================
 // 2️⃣ Service Duration Mapping
