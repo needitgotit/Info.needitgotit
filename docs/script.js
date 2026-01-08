@@ -3,10 +3,10 @@
 // ==========================
 const SUPABASE_URL = "https://kuabmauutjchvvrfycxk.supabase.co";
 const SUPABASE_KEY = "sb_publishable_vD1UPjBTrWOXumJ8Z5vF-A_4Vt16Byg";
-const supabase = supabase.createClient(https://kuabmauutjchvvrfycxk.supabase.co, sb_publishable_vD1UPjBTrWOXumJ8Z5vF-A_4Vt16Byg);
+const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 // ==========================
-// 2️⃣ Service Duration Mapping
+// 2️⃣ Service Duration Mapping (hours)
 // ==========================
 const serviceDurations = {
   "Home Cleaning - Standard": 2,
@@ -32,9 +32,35 @@ const serviceDurations = {
 const dateInput = document.querySelector('input[name="date"]');
 const serviceSelect = document.querySelector('select[name="service"]');
 const timeSelect = document.querySelector('select[name="time"]');
+const form = document.getElementById("bookingForm");
+const agreeCheckbox = document.getElementById("agreeTerms");
 
 // ==========================
-// 4️⃣ Helper Functions
+// 4️⃣ Generate Time Slots Dynamically
+// ==========================
+function generateTimeSlots() {
+  timeSelect.innerHTML = '<option value="">Select time</option>'; // reset
+  const startHour = 7.5; // 7:30 AM
+  const endHour = 19;    // 7:00 PM
+  const interval = 0.5;  // 30-minute slots
+
+  for (let t = startHour; t + 0.5 <= endHour; t += interval) {
+    const hours = Math.floor(t);
+    const minutes = t % 1 === 0.5 ? "30" : "00";
+    const timeStr = `${hours.toString().padStart(2, "0")}:${minutes}`;
+    const display = `${hours % 12 || 12}:${minutes} ${hours < 12 ? "AM" : "PM"}`;
+    const option = document.createElement("option");
+    option.value = timeStr;
+    option.textContent = display;
+    timeSelect.appendChild(option);
+  }
+}
+
+// Generate slots on page load
+generateTimeSlots();
+
+// ==========================
+// 5️⃣ Helper Functions
 // ==========================
 function parseTime(timeStr) {
   const [h, m] = timeStr.split(":").map(Number);
@@ -46,13 +72,13 @@ function timesOverlap(startA, endA, startB, endB) {
 }
 
 // ==========================
-// 5️⃣ Update Available Slots
+// 6️⃣ Update Available Slots Based on Supabase Bookings
 // ==========================
 async function updateAvailableSlots(selectedDate, selectedService) {
   const duration = serviceDurations[selectedService];
   if (!duration || !selectedDate) return;
 
-  // Fetch existing bookings for the date
+  // Fetch existing bookings for the selected date
   const { data: bookings } = await supabase
     .from("bookings")
     .select("start_time, service_duration")
@@ -65,10 +91,10 @@ async function updateAvailableSlots(selectedDate, selectedService) {
     option.textContent = option.textContent.replace(" (Unavailable)", "");
   });
 
-  // Operational hours: 7:30 AM – 7:00 PM
   const OP_START = 7.5; // 7:30
   const OP_END = 19;    // 7 PM
 
+  // Disable slots outside operational hours
   Array.from(timeSelect.options).forEach(option => {
     if (!option.value) return;
     const slotStart = parseTime(option.value);
@@ -97,31 +123,27 @@ async function updateAvailableSlots(selectedDate, selectedService) {
 }
 
 // ==========================
-// 6️⃣ Event Listeners
+// 7️⃣ Event Listeners
 // ==========================
 dateInput.addEventListener("change", () => updateAvailableSlots(dateInput.value, serviceSelect.value));
 serviceSelect.addEventListener("change", () => updateAvailableSlots(dateInput.value, serviceSelect.value));
 
 // ==========================
-// 7️⃣ Insert Booking into Supabase
-// Extends your existing form submit
+// 8️⃣ Form Submission
 // ==========================
-document.getElementById("bookingForm").addEventListener("submit", async function (e) {
+form.addEventListener("submit", async function (e) {
   e.preventDefault();
 
-  const formData = new FormData(this);
-  const data = Object.fromEntries(formData.entries());
-
-  // Terms & Conditions Enforcement
-  const agreeCheckbox = document.getElementById("agreeTerms");
   if (!agreeCheckbox.checked) {
     alert("You must agree to the Terms & Conditions before submitting.");
     return;
   }
 
+  const formData = new FormData(this);
+  const data = Object.fromEntries(formData.entries());
   const duration = serviceDurations[data.service];
 
-  // Insert into Supabase
+  // Insert booking into Supabase
   const { error } = await supabase.from("bookings").insert([
     {
       date: data.date,
@@ -140,7 +162,7 @@ document.getElementById("bookingForm").addEventListener("submit", async function
     return;
   }
 
-  // Continue existing EmailJS logic
+  // EmailJS logic
   const templateParams = {
     to_email: data.email,
     name: data.name,
@@ -164,7 +186,8 @@ document.getElementById("bookingForm").addEventListener("submit", async function
   .then(() => {
     alert("Booking submitted successfully! A confirmation email has been sent.");
     this.reset();
-    updateAvailableSlots(dateInput.value, serviceSelect.value); // Refresh slots
+    generateTimeSlots(); // regenerate all slots
+    updateAvailableSlots(dateInput.value, serviceSelect.value); // refresh availability
   })
   .catch((error) => {
     console.error("EmailJS error:", error);
