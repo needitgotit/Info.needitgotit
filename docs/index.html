@@ -6,110 +6,263 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="style.css">
   <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
-</head>
 
-<body>
-  <div class="container">
-    <h1>BOOK A SERVICE✨</h1>
-    <p class="subtitle">Fast • Reliable • Transparent Pricing</p>
-
-    <form id="bookingForm">
-      <label>Full Name</label>
-      <input type="text" name="name" required>
-
-      <label>Email Address</label>
-      <input type="email" name="email" required>
-
-      <label>Phone Number</label>
-      <input type="tel" name="phone" required>
-
-      <label>Service Category</label>
-      <select name="category" required>
-        <option value="">Select category</option>
-        <option>Home & Property</option>
-        <option>Personal & Care</option>
-        <option>Creative & Media</option>
-        <option>Events & Promotion</option>
-      </select>
-
-      <label>Service</label>
-      <select name="service" id="serviceSelect" required>
-        <option value="">Select service</option>
-        <optgroup label="HOME & PROPERTY SERVICES">
-          <option>Home Cleaning</option>
-          <option>Window Cleaning</option>
-          <option>Property Cleaning</option>
-          <option>Interior Decoration</option>
-        </optgroup>
-        <optgroup label="PERSONAL & CARE">
-          <option>Babysitting</option>
-          <option>Dog Walking</option>
-          <option>Personal Shopper</option>
-          <option>Assistant</option>
-          <option>Delivery Assistance*</option>
-          <option>Etc.</option>
-        </optgroup>
-        <optgroup label="CREATIVE & MEDIA">
-          <option>Vocalist</option>
-          <option>Songwriting</option>
-          <option>Model</option>
-          <option>Clothing Stylist</option>
-          <option>Food Reviewer</option>
-        </optgroup>
-        <optgroup label="EVENTS & PROMOTION">
-          <option>Event Staff</option>
-          <option>Cater Help</option>
-          <option>Promoter</option>
-          <option>Sales</option>
-        </optgroup>
-      </select>
-
-      <label>Date</label>
-      <input type="date" name="date" id="dateInput" required>
-
-      <label>Preferred Time</label>
-      <select name="time" id="timeSelect" required>
-        <option value="">Select time</option>
-      </select>
-
-      <label>Additional Details</label>
-      <textarea name="details" placeholder="Tell us anything we should know..."></textarea>
-
-      <!-- TERMS & CONDITIONS AGREEMENT -->
-      <div style="margin-top:20px; font-size:13px;">
-        <details style="margin-bottom:10px;">
-          <summary style="cursor:pointer; font-weight:bold;">Read Terms & Conditions</summary>
-          <div style="max-height:220px; overflow-y:auto; padding:10px; border:1px solid #ccc; border-radius:6px; background:#fafafa;">
-            <h3>TERMS & CONDITIONS – Need It! Got It! (Global Services)</h3>
-            <p><strong>Effective Date:</strong> 01/01/2026</p>
-            <p>These Terms & Conditions (“Agreement”) govern all bookings, services, and interactions with
-            <strong>Need It! Got It!</strong> (“we,” “us,” or “our”).</p>
-            <p><strong>Entity Status & Continuity:</strong> Operated by <strong>James Brown</strong>, later by LLC. Rights & obligations transfer automatically.</p>
-            <p><strong>Scope of Services:</strong> Home & property, personal & care, creative & media, events & promotion. Booking is a request, not guaranteed.</p>
-            <p><strong>Bookings & Confirmation:</strong> Email confirms receipt only. Service confirmed only after approval.</p>
-            <p><strong>Refund Policy:</strong> All sales final unless stated. No refunds for same-day cancellations, no-shows, or completed services.</p>
-            <p><strong>Risk Assumption:</strong> Client assumes all inherent risks per Florida law.</p>
-            <p><strong>Independent Providers:</strong> Some services by contractors; limited liability.</p>
-            <p><strong>Limitation of Liability:</strong> Liability ≤ service payment.</p>
-            <p><strong>Indemnification:</strong> Client indemnifies Need It! Got It!</p>
-            <p><strong>Force Majeure:</strong> Not liable for uncontrollable delays.</p>
-            <p><strong>Arbitration & Governing Law:</strong> Binding arbitration in Florida; Florida law applies.</p>
-          </div>
-        </details>
-        <label style="display:flex; align-items:flex-start; gap:8px;">
-          <input type="checkbox" id="agreeTerms" required>
-          <span>I have read and agree to the Terms & Conditions</span>
-        </label>
-      </div>
-
-      <button type="submit">Submit Booking</button>
-    </form>
-
-    <p class="footer-note">You’ll receive a confirmation email after submitting.</p>
-  </div>
-
+  <!-- EmailJS SDK -->
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-  <script src="script.js"></script>
+  <script>
+    emailjs.init("SU4xs5Go_As6GQEfL");
+  </script>
+</head>
+<body>
+
+<div class="container">
+  <h1>BOOK A SERVICE✨</h1>
+  <p class="subtitle">Fast • Reliable • Transparent Pricing</p>
+
+  <form id="bookingForm">
+
+    <label>Full Name</label>
+    <input type="text" name="name" required>
+
+    <label>Email Address</label>
+    <input type="email" name="email" required>
+
+    <label>Phone Number</label>
+    <input type="tel" name="phone" required>
+
+    <label>Service Category</label>
+    <select name="category" required>
+      <option value="">Select category</option>
+      <option>Home & Property</option>
+      <option>Personal & Care</option>
+      <option>Creative & Media</option>
+      <option>Events & Promotion</option>
+    </select>
+
+    <label>Service</label>
+    <select name="service" required>
+      <option value="">Select service</option>
+      <optgroup label="HOME & PROPERTY SERVICES">
+        <option>Home Cleaning</option>
+        <option>Window Cleaning</option>
+        <option>Property Cleaning</option>
+        <option>Interior Decoration</option>
+      </optgroup>
+      <optgroup label="PERSONAL & CARE">
+        <option>Babysitting</option>
+        <option>Dog Walking</option>
+        <option>Personal Shopper</option>
+        <option>Assistant</option>
+        <option>Delivery Assistance*</option>
+        <option>Etc.</option>
+      </optgroup>
+      <optgroup label="CREATIVE & MEDIA">
+        <option>Vocalist</option>
+        <option>Songwriting</option>
+        <option>Model</option>
+        <option>Clothing Stylist</option>
+        <option>Food Reviewer</option>
+      </optgroup>
+      <optgroup label="EVENTS & PROMOTION">
+        <option>Event Staff</option>
+        <option>Cater Help</option>
+        <option>Promoter</option>
+        <option>Sales</option>
+      </optgroup>
+    </select>
+
+    <label>Date</label>
+    <input type="date" name="date" required>
+
+    <label>Preferred Time</label>
+    <select name="time" required>
+      <option value="">Select time</option>
+    </select>
+
+    <label>Additional Details</label>
+    <textarea name="details" placeholder="Tell us anything we should know..."></textarea>
+
+    <!-- TERMS & CONDITIONS AGREEMENT -->
+    <div style="margin-top:20px; font-size:13px;">
+      <details style="margin-bottom:10px;">
+        <summary style="cursor:pointer; font-weight:bold;">Read Terms & Conditions</summary>
+        <div style="max-height:220px; overflow-y:auto; padding:10px; border:1px solid #ccc; border-radius:6px; background:#fafafa;">
+          <h3>TERMS & CONDITIONS – Need It! Got It! (Global Services)</h3>
+          <p><strong>Effective Date:</strong> 01/01/2026</p>
+          <p>These Terms & Conditions (“Agreement”) govern all bookings, services, and interactions with <strong>Need It! Got It!</strong> (“Need It! Got It!”, “we,” “us,” or “our”).</p>
+          <p><strong>Entity Status & Continuity Clause:</strong><br>Need It! Got It! is currently operated by <strong>James Brown, an individual</strong>, and may later be operated by a limited liability company or other legal entity. Upon formation, all rights, obligations, and protections under this Agreement shall automatically transfer to the successor entity without further notice or consent.</p>
+          <p><strong>Scope of Services:</strong> Services include home & property, personal & care, creative & media, and events & promotional services. Submission of a booking is a request only and not a guarantee of service.</p>
+          <p><strong>Bookings & Confirmation:</strong> Email confirmation confirms receipt only. No obligation exists until service details are approved.</p>
+          <p><strong>Refund Policy:</strong> All sales are final unless stated otherwise in writing. No refunds for same-day cancellations, no-shows, or completed services.</p>
+          <p><strong>Risk Assumption:</strong> Client acknowledges services may involve inherent risks and voluntarily assumes all such risks to the maximum extent permitted by Florida law.</p>
+          <p><strong>Independent Providers:</strong> Some services may be performed by independent contractors. Need It! Got It! is not liable for acts beyond reasonable coordination.</p>
+          <p><strong>Limitation of Liability:</strong> Liability shall not exceed the amount paid for the service at issue.</p>
+          <p><strong>Indemnification:</strong> Client agrees to indemnify and hold harmless Need It! Got It! from all claims.</p>
+          <p><strong>Force Majeure:</strong> We are not liable for delays caused by events beyond reasonable control.</p>
+          <p><strong>Arbitration:</strong> All disputes shall be resolved by binding arbitration in Florida. Client waives participation in class actions.</p>
+          <p><strong>Governing Law:</strong> Florida law applies.</p>
+        </div>
+      </details>
+      <label style="display:flex; align-items:flex-start; gap:8px;">
+        <input type="checkbox" id="agreeTerms" required>
+        <span>I have read and agree to the Terms & Conditions</span>
+      </label>
+    </div>
+
+    <button type="submit">Submit Booking</button>
+  </form>
+
+  <p class="footer-note">You’ll receive a confirmation email after submitting.</p>
+</div>
+
+<!-- FINAL JS: Dynamic Time Slots + Durations + Double Booking Prevention -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/supabase.min.js"></script>
+<script>
+  // Supabase setup
+  const supabaseUrl = "https://kuabmauutjchvvrfycxk.supabase.co";
+  const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt1YWJtYXV1dGpjaHZ2cmZ5Y3hrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc4NDM2NjEsImV4cCI6MjA4MzQxOTY2MX0.7tNZxv8DD0qL23zRoFUgEWq7dby_2U6WgZiIie5hGWI";
+  const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+
+  const form = document.getElementById("bookingForm");
+  const categorySelect = form.querySelector("select[name='category']");
+  const serviceSelect = form.querySelector("select[name='service']");
+  const dateInput = form.querySelector("input[name='date']");
+  const timeSelect = form.querySelector("select[name='time']");
+  const agreeCheckbox = document.getElementById("agreeTerms");
+
+  // Service durations in minutes
+  const serviceDurations = {
+    "Home Cleaning": 120,
+    "Window Cleaning": 60,
+    "Property Cleaning": 90,
+    "Interior Decoration": 120,
+    "Babysitting": 240,
+    "Dog Walking": 60,
+    "Personal Shopper": 120,
+    "Assistant": 120,
+    "Delivery Assistance*": 60,
+    "Etc.": 60,
+    "Vocalist": 120,
+    "Songwriting": 120,
+    "Model": 180,
+    "Clothing Stylist": 120,
+    "Food Reviewer": 120,
+    "Event Staff": 180,
+    "Cater Help": 180,
+    "Promoter": 180,
+    "Sales": 180
+  };
+
+  function generateTimeSlots() {
+    const slots = [];
+    let start = 7.5 * 60; // 7:30 AM in minutes
+    const end = 19 * 60; // 7 PM
+    while (start + 30 <= end + 1) {
+      const hours = Math.floor(start / 60);
+      const minutes = start % 60;
+      const ampm = hours >= 12 ? "PM" : "AM";
+      const displayHour = hours % 12 === 0 ? 12 : hours % 12;
+      const displayMinutes = minutes.toString().padStart(2, "0");
+      slots.push({hour: hours, minutes, text: `${displayHour}:${displayMinutes} ${ampm}`});
+      start += 30;
+    }
+    return slots;
+  }
+
+  async function populateTimeSlots() {
+    const selectedService = serviceSelect.value;
+    const selectedDate = dateInput.value;
+    timeSelect.innerHTML = '<option value="">Select time</option>';
+    if (!selectedService || !selectedDate) return;
+
+    const { data: bookings } = await supabase
+      .from("bookings")
+      .select("*")
+      .eq("service", selectedService)
+      .eq("date", selectedDate);
+
+    const bookedTimes = bookings.map(b => b.time);
+    const allSlots = generateTimeSlots();
+    const duration = serviceDurations[selectedService] || 60;
+    const slotStep = 30; // minutes
+    const slotsNeeded = Math.ceil(duration / slotStep);
+
+    const availableSlots = allSlots.filter((_, index) => {
+      const range = allSlots.slice(index, index + slotsNeeded);
+      if (range.length < slotsNeeded) return false;
+      return !range.some(r => bookedTimes.includes(r.text));
+    });
+
+    if (availableSlots.length === 0) {
+      timeSelect.innerHTML += '<option value="">No available slots for this date/service</option>';
+      return;
+    }
+
+    availableSlots.forEach((slot, index) => {
+      const range = allSlots.slice(index, index + slotsNeeded);
+      if (range.length < slotsNeeded) return;
+      const startTime = range[0];
+      const endTime = range[range.length - 1];
+      const endHour = endTime.hour + Math.floor((endTime.minutes + slotStep) / 60);
+      const endMinutes = (endTime.minutes + slotStep) % 60;
+      const endAmpm = endHour >= 12 ? "PM" : "AM";
+      const endDisplayHour = endHour % 12 === 0 ? 12 : endHour % 12;
+      const endDisplayMinutes = endMinutes.toString().padStart(2, "0");
+
+      const label = `${startTime.text} – ${endDisplayHour}:${endDisplayMinutes} ${endAmpm}`;
+      const option = document.createElement("option");
+      option.value = label;
+      option.textContent = label;
+      timeSelect.appendChild(option);
+    });
+  }
+
+  serviceSelect.addEventListener("change", populateTimeSlots);
+  dateInput.addEventListener("change", populateTimeSlots);
+
+  form.addEventListener("submit", async function (e) {
+    if (!agreeCheckbox.checked) {
+      e.preventDefault();
+      alert("You must agree to the Terms & Conditions before submitting.");
+      return;
+    }
+
+    e.preventDefault();
+    const formData = new FormData(this);
+    const data = Object.fromEntries(formData.entries());
+
+    const templateParams = {
+      to_email: data.email,
+      name: data.name,
+      phone: data.phone,
+      category: data.category,
+      service: data.service,
+      date: data.date,
+      time: data.time,
+      details: data.details || "None"
+    };
+
+    const submitBtn = this.querySelector("button[type='submit']");
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Submitting...";
+
+    try {
+      await emailjs.send("service_tpy3o7q", "template_7j2yea8", templateParams);
+      const { error } = await supabase.from("bookings").insert([{ service: data.service, date: data.date, time: data.time }]);
+      if (error) throw error;
+
+      alert("Booking submitted successfully! A confirmation email has been sent.");
+      this.reset();
+      timeSelect.innerHTML = '<option value="">Select time</option>';
+    } catch (error) {
+      console.error(error);
+      alert("Booking failed. Please try again.");
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = "Submit Booking";
+    }
+  });
+</script>
+
 </body>
 </html>
