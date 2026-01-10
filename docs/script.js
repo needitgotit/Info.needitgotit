@@ -1,25 +1,25 @@
-document.addEventListener("DOMContentLoaded", function () {
+ document.addEventListener("DOMContentLoaded", () => {
 
-  /* =======================
-     SUPABASE SETUP
-  ======================= */
+  // -----------------------------
+  // SUPABASE CLIENT (MUST EXIST)
+  // -----------------------------
   const supabase = window.supabase.createClient(
     "https://kuabmauutjchvvrfycxk.supabase.co",
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt1YWJtYXV1dGpjaHZ2cmZ5Y3hrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc4NDM2NjEsImV4cCI6MjA4MzQxOTY2MX0.7tNZxv8DD0qL23zRoFUgEWq7dby_2U6WgZiIie5hGWI"
   );
 
-  /* =======================
-     ELEMENTS
-  ======================= */
+  // -----------------------------
+  // FORM ELEMENTS (MUST MATCH HTML)
+  // -----------------------------
   const form = document.getElementById("bookingForm");
-  const serviceSelect = form.querySelector("select[name='service']");
-  const dateInput = form.querySelector("input[name='date']");
-  const timeSelect = form.querySelector("select[name='time']");
-  const agreeCheckbox = document.getElementById("agreeTerms");
+  const service = form.service;
+  const date = form.date;
+  const timeSelect = form.time;
+  const agreeTerms = document.getElementById("agreeTerms");
 
-  /* =======================
-     SERVICE DURATIONS (MIN)
-  ======================= */
+  // -----------------------------
+  // SERVICE DURATIONS (MINUTES)
+  // -----------------------------
   const durations = {
     "Home Cleaning": 120,
     "Window Cleaning": 60,
@@ -28,68 +28,115 @@ document.addEventListener("DOMContentLoaded", function () {
     "Delivery Assistance*": 60
   };
 
-  /* =======================
-     TIME SLOT GENERATOR
-  ======================= */
-  function generateSlots() {
-    const slots = [];
-    let minutes = 450; // 7:30 AM
-    const end = 1140; // 7:00 PM
+  // -----------------------------
+  // TIME FORMATTER
+  // -----------------------------
+  function minutesToLabel(start, duration) {
+    const end = start + duration;
 
-    while (minutes + 30 <= end) {
-      const h = Math.floor(minutes / 60);
-      const m = minutes % 60;
+    const format = (m) => {
+      const h = Math.floor(m / 60);
+      const min = m % 60;
       const ampm = h >= 12 ? "PM" : "AM";
-      const displayH = h % 12 === 0 ? 12 : h % 12;
-      slots.push(`${displayH}:${m.toString().padStart(2, "0")} ${ampm}`);
-      minutes += 30;
-    }
-    return slots;
+      const displayHour = h % 12 || 12;
+      return `${displayHour}:${min.toString().padStart(2, "0")} ${ampm}`;
+    };
+
+    return `${format(start)} – ${format(end)}`;
   }
 
-  /* =======================
-     POPULATE TIMES
-  ======================= */
-  async function populateTimes() {
+  // -----------------------------
+  // LOAD AVAILABLE TIME SLOTS
+  // -----------------------------
+  async function loadTimes() {
     timeSelect.innerHTML = `<option value="">Select time</option>`;
 
-    if (!serviceSelect.value || !dateInput.value) return;
+    if (!service.value || !date.value) return;
 
-    console.log("populateTimeSlots fired");
-
-    const duration = durations[serviceSelect.value] || 60;
-    const slotsNeeded = duration / 30;
-    const allSlots = generateSlots();
-
-    const { data: bookings } = await supabase
+    const { data, error } = await supabase
       .from("bookings")
-      .select("time")
-      .eq("service", serviceSelect.value)
-      .eq("date", dateInput.value);
+      .select("start_minutes")
+      .eq("service", service.value)
+      .eq("date", date.value);
 
-    const booked = bookings.map(b => b.time);
+    if (error) {
+      console.error("Supabase fetch error:", error);
+      return;
+    }
 
-    for (let i = 0; i + slotsNeeded <= allSlots.length; i++) {
-      const range = allSlots.slice(i, i + slotsNeeded);
-      if (range.some(t => booked.includes(t))) continue;
+    const booked = data.map(row => row.start_minutes);
+    const duration = durations[service.value] || 60;
 
-      const start = range[0];
-      const end = range[range.length - 1];
-      const opt = document.createElement("option");
-      opt.value = `${start} – ${end}`;
-      opt.textContent = `${start} – ${end}`;
-      timeSelect.appendChild(opt);
+    // 7:30 AM (450) → 7:00 PM cutoff (1140)
+    for (let start = 450; start + duration <= 1140; start += 30) {
+      if (booked.includes(start)) continue;
+
+      const option = document.createElement("option");
+      option.value = start;
+      option.textContent = minutesToLabel(start, duration);
+      timeSelect.appendChild(option);
     }
 
     if (timeSelect.options.length === 1) {
-      timeSelect.innerHTML += `<option>No available times</option>`;
+      const opt = document.createElement("option");
+      opt.textContent = "No availability";
+      opt.disabled = true;
+      timeSelect.appendChild(opt);
     }
   }
 
-  /* =======================
-     EVENTS
-  ======================= */
-  serviceSelect.addEventListener("change", populateTimes);
-  dateInput.addEventListener("change", populateTimes);
+  // -----------------------------
+  // EVENT LISTENERS
+  // -----------------------------
+  service.addEventListener("change", loadTimes);
+  date.addEventListener("change", loadTimes);
+
+  // -----------------------------
+  // FORM SUBMISSION
+  // -----------------------------
+  form.addEventListener("submit", async (e) => {
+
+    if (!agreeTerms.checked) {
+      e.preventDefault();
+      alert("You must agree to the Terms & Conditions before submitting.");
+      return;
+    }
+
+    const start_minutes = parseInt(timeSelect.value, 10);
+
+    if (isNaN(start_minutes)) {
+      e.preventDefault();
+      alert("Please select a valid time slot.");
+      return;
+    }
+
+    // Insert booking FIRST (prevents double booking)
+    const { error } = await supabase
+      .from("bookings")
+      .insert([{
+        service: service.value,
+        date: date.value,
+        start_minutes
+      }]);
+
+    if (error) {
+      e.preventDefault();
+      alert("That time was just booked. Please choose another.");
+      loadTimes();
+      return;
+    }
+
+    // EmailJS confirmation
+    emailjs.send(
+      "service_tpy3o7q",
+      "template_7j2yea8",
+      {
+        to_email: form.email.value,
+        service: service.value,
+        date: date.value,
+        time: minutesToLabel(start_minutes, durations[service.value])
+      }
+    );
+  });
 
 });
