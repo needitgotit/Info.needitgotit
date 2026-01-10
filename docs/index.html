@@ -4,34 +4,24 @@
   <meta charset="UTF-8" />
   <title>Need It! Got It! | BOOK A SERVICE✨</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- Styles -->
   <link rel="stylesheet" href="style.css">
   <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+
+  <!-- Supabase CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/supabase.min.js"></script>
 
   <!-- EmailJS SDK -->
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
   <script>
     emailjs.init("SU4xs5Go_As6GQEfL");
   </script>
-
-  <!-- Supabase CDN (MUST be before script.js) -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
-
 <body>
-
   <div class="container">
     <h1>BOOK A SERVICE✨</h1>
     <p class="subtitle">Fast • Reliable • Transparent Pricing</p>
 
-    <!-- Formspree endpoint kept intact -->
-    <form
-      id="bookingForm"
-      action="https://formspree.io/f/YOUR_FORM_ID"
-      method="POST"
-    >
-
+    <form id="bookingForm">
       <label>Full Name</label>
       <input type="text" name="name" required>
 
@@ -41,14 +31,49 @@
       <label>Phone Number</label>
       <input type="tel" name="phone" required>
 
+      <label>Service Category</label>
+      <select name="category" required>
+        <option value="">Select category</option>
+        <option>Home & Property</option>
+        <option>Personal & Care</option>
+        <option>Creative & Media</option>
+        <option>Events & Promotion</option>
+      </select>
+
       <label>Service</label>
       <select name="service" required>
         <option value="">Select service</option>
-        <option>Home Cleaning</option>
-        <option>Window Cleaning</option>
-        <option>Babysitting</option>
-        <option>Event Staff</option>
-        <option>Delivery Assistance*</option>
+
+        <optgroup label="HOME & PROPERTY SERVICES">
+          <option>Home Cleaning</option>
+          <option>Window Cleaning</option>
+          <option>Property Cleaning</option>
+          <option>Interior Decoration</option>
+        </optgroup>
+
+        <optgroup label="PERSONAL & CARE">
+          <option>Babysitting</option>
+          <option>Dog Walking</option>
+          <option>Personal Shopper</option>
+          <option>Assistant</option>
+          <option>Delivery Assistance*</option>
+          <option>Etc.</option>
+        </optgroup>
+
+        <optgroup label="CREATIVE & MEDIA">
+          <option>Vocalist</option>
+          <option>Songwriting</option>
+          <option>Model</option>
+          <option>Clothing Stylist</option>
+          <option>Food Reviewer</option>
+        </optgroup>
+
+        <optgroup label="EVENTS & PROMOTION">
+          <option>Event Staff</option>
+          <option>Cater Help</option>
+          <option>Promoter</option>
+          <option>Sales</option>
+        </optgroup>
       </select>
 
       <label>Date</label>
@@ -62,78 +87,17 @@
       <label>Additional Details</label>
       <textarea name="details" placeholder="Tell us anything we should know..."></textarea>
 
-      <!-- TERMS & CONDITIONS AGREEMENT (RESTORED + REQUIRED) -->
+      <!-- TERMS & CONDITIONS AGREEMENT -->
       <div style="margin-top:20px; font-size:13px;">
-
         <details style="margin-bottom:10px;">
-          <summary style="cursor:pointer; font-weight:bold;">
-            Read Terms & Conditions
-          </summary>
-
-          <div style="
-            max-height:220px;
-            overflow-y:auto;
-            padding:12px;
-            border:1px solid #ccc;
-            border-radius:6px;
-            background:#fafafa;
-          ">
-
+          <summary style="cursor:pointer; font-weight:bold;">Read Terms & Conditions</summary>
+          <div style="max-height:220px; overflow-y:auto; padding:10px; border:1px solid #ccc; border-radius:6px; background:#fafafa;">
+            <!-- Terms content here -->
             <h3>TERMS & CONDITIONS – Need It! Got It! (Global Services)</h3>
             <p><strong>Effective Date:</strong> 01/01/2026</p>
-
-            <p>
-              These Terms & Conditions (“Agreement”) govern all bookings, services,
-              and interactions with <strong>Need It! Got It!</strong> (“we,” “us,” or “our”).
-            </p>
-
-            <p><strong>Entity Status & Continuity:</strong><br>
-              Need It! Got It! is currently operated by
-              <strong>James Brown, an individual</strong>.
-              Upon formation of a limited liability company or other entity,
-              all rights and obligations under this Agreement automatically transfer.
-            </p>
-
-            <p><strong>Scope of Services:</strong><br>
-              Services include home & property, personal & care, creative & media,
-              and events & promotional services. Booking submissions are requests only.
-            </p>
-
-            <p><strong>Bookings & Confirmation:</strong><br>
-              Confirmation emails acknowledge receipt only.
-              Service is not confirmed until accepted.
-            </p>
-
-            <p><strong>Refund Policy:</strong><br>
-              All sales are final unless otherwise stated in writing.
-              No refunds for same-day cancellations, no-shows, or completed services.
-            </p>
-
-            <p><strong>Risk Assumption:</strong><br>
-              Client assumes all inherent risks to the maximum extent permitted by Florida law.
-            </p>
-
-            <p><strong>Independent Contractors:</strong><br>
-              Some services may be performed by independent providers.
-            </p>
-
-            <p><strong>Limitation of Liability:</strong><br>
-              Liability shall not exceed the amount paid for the service.
-            </p>
-
-            <p><strong>Indemnification:</strong><br>
-              Client agrees to indemnify and hold harmless Need It! Got It!.
-            </p>
-
-            <p><strong>Force Majeure:</strong><br>
-              We are not liable for delays caused by events beyond reasonable control.
-            </p>
-
-            <p><strong>Arbitration & Governing Law:</strong><br>
-              All disputes resolved by binding arbitration in Florida.
-              Florida law governs this Agreement.
-            </p>
-
+            <p>These Terms & Conditions (“Agreement”) govern all bookings, services, and interactions with <strong>Need It! Got It!</strong> (“Need It! Got It!”, “we,” “us,” or “our”).</p>
+            <p>Entity Status & Continuity Clause: Need It! Got It! is currently operated by <strong>James Brown, an individual</strong>. All rights, obligations, and protections automatically transfer to a successor entity upon formation.</p>
+            <p>Scope of Services, Bookings & Confirmation, Refund Policy, Risk Assumption, Independent Providers, Limitation of Liability, Indemnification, Force Majeure, Arbitration, Governing Law... (rest of terms)</p>
           </div>
         </details>
 
@@ -141,21 +105,15 @@
           <input type="checkbox" id="agreeTerms" required>
           <span>I have read and agree to the Terms & Conditions</span>
         </label>
-
       </div>
 
       <button type="submit">Submit Booking</button>
-
     </form>
 
-    <p class="footer-note">
-      You’ll receive a confirmation email after submitting.
-    </p>
-
+    <p class="footer-note">You’ll receive a confirmation email after submitting.</p>
   </div>
 
-  <!-- Main JS (MUST be last) -->
+  <!-- Custom JS -->
   <script src="script.js"></script>
-
 </body>
 </html>
