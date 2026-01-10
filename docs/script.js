@@ -1,4 +1,112 @@
- document.addEventListener("DOMContentLoaded", () => {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           document.addEventListener("DOMContentLoaded", () => {
+  const supabase = window.supabase.createClient(
+    "https://kuabmauutjchvvrfycxk.supabase.co",
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt1YWJtYXV1dGpjaHZ2cmZ5Y3hrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc4NDM2NjEsImV4cCI6MjA4MzQxOTY2MX0.7tNZxv8DD0qL23zRoFUgEWq7dby_2U6WgZiIie5hGWI"
+  );
+
+  const form = document.getElementById("bookingForm");
+  const service = form.service;
+  const date = form.date;
+  const timeSelect = form.time;
+
+  const durations = {
+    "Home Cleaning": 120,
+    "Window Cleaning": 60,
+    "Babysitting": 240,
+    "Event Staff": 180,
+    "Delivery Assistance*": 60
+  };
+
+  function minutesToLabel(start, duration) {
+    const end = start + duration;
+    const f = m => {
+      const h = Math.floor(m / 60);
+      const min = m % 60;
+      const ampm = h >= 12 ? "PM" : "AM";
+      const dh = h % 12 || 12;
+      return `${dh}:${min.toString().padStart(2,"0")} ${ampm}`;
+    };
+    return `${f(start)} – ${f(end)}`;
+  }
+
+  async function loadTimes() {
+    timeSelect.innerHTML = `<option value="">Select time</option>`;
+    if (!service.value || !date.value) return;
+
+    const { data } = await supabase
+      .from("bookings")
+      .select("start_minutes")
+      .eq("service", service.value)
+      .eq("date", date.value);
+
+    const booked = data.map(b => b.start_minutes);
+    const duration = durations[service.value] || 60;
+
+    for (let start = 450; start + duration <= 1140; start += 30) { // 7:30am to 7pm
+      if (booked.includes(start)) continue;
+      const opt = document.createElement("option");
+      opt.value = start;
+      opt.textContent = minutesToLabel(start, duration);
+      timeSelect.appendChild(opt);
+    }
+
+    if (timeSelect.options.length === 1) {
+      timeSelect.innerHTML += `<option>No availability</option>`;
+    }
+  }
+
+  service.addEventListener("change", loadTimes);
+  date.addEventListener("change", loadTimes);
+
+  form.addEventListener("submit", async e => {
+    if (!document.getElementById("agreeTerms").checked) {
+      e.preventDefault();
+      alert("You must agree to the Terms & Conditions.");
+      return;
+    }
+
+    const start_minutes = parseInt(timeSelect.value);
+    if (isNaN(start_minutes)) {
+      e.preventDefault();
+      alert("Please select a valid time.");
+      return;
+    }
+
+    const { error } = await supabase.from("bookings").insert([{
+      name: form.name.value,
+      email: form.email.value,
+      phone: form.phone.value,
+      category: service.value,
+      service: service.value,
+      date: date.value,
+      start_minutes,
+      details: form.details.value || "None"
+    }]);
+
+    if (error) {
+      e.preventDefault();
+      alert("That time was just booked. Please choose another.");
+      loadTimes();
+      return;
+    }
+
+    // EmailJS confirmation
+    emailjs.send("service_tpy3o7q", "template_7j2yea8", {
+      to_email: form.email.value,
+      name: form.name.value,
+      phone: form.phone.value,
+      service: service.value,
+      date: date.value,
+      time: minutesToLabel(start_minutes, durations[service.value]),
+      details: form.details.value || "None"
+    });
+
+    alert("Booking submitted successfully! A confirmation email has been sent.");
+    form.reset();
+    timeSelect.innerHTML = `<option value="">Select time</option>`;
+  });
+});
+                                                                                                                         document.addEventListener("DOMContentLoaded", () => {
 
   // -----------------------------
   // SUPABASE CLIENT (MUST EXIST)
