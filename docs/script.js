@@ -1,124 +1,13 @@
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           document.addEventListener("DOMContentLoaded", () => {
-  const supabase = window.supabase.createClient(
-    "https://kuabmauutjchvvrfycxk.supabase.co",
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt1YWJtYXV1dGpjaHZ2cmZ5Y3hrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc4NDM2NjEsImV4cCI6MjA4MzQxOTY2MX0.7tNZxv8DD0qL23zRoFUgEWq7dby_2U6WgZiIie5hGWI"
-  );
-
-  const form = document.getElementById("bookingForm");
-  const service = form.service;
-  const date = form.date;
-  const timeSelect = form.time;
-
-  const durations = {
-    "Home Cleaning": 120,
-    "Window Cleaning": 60,
-    "Babysitting": 240,
-    "Event Staff": 180,
-    "Delivery Assistance*": 60
-  };
-
-  function minutesToLabel(start, duration) {
-    const end = start + duration;
-    const f = m => {
-      const h = Math.floor(m / 60);
-      const min = m % 60;
-      const ampm = h >= 12 ? "PM" : "AM";
-      const dh = h % 12 || 12;
-      return `${dh}:${min.toString().padStart(2,"0")} ${ampm}`;
-    };
-    return `${f(start)} – ${f(end)}`;
-  }
-
-  async function loadTimes() {
-    timeSelect.innerHTML = `<option value="">Select time</option>`;
-    if (!service.value || !date.value) return;
-
-    const { data } = await supabase
-      .from("bookings")
-      .select("start_minutes")
-      .eq("service", service.value)
-      .eq("date", date.value);
-
-    const booked = data.map(b => b.start_minutes);
-    const duration = durations[service.value] || 60;
-
-    for (let start = 450; start + duration <= 1140; start += 30) { // 7:30am to 7pm
-      if (booked.includes(start)) continue;
-      const opt = document.createElement("option");
-      opt.value = start;
-      opt.textContent = minutesToLabel(start, duration);
-      timeSelect.appendChild(opt);
-    }
-
-    if (timeSelect.options.length === 1) {
-      timeSelect.innerHTML += `<option>No availability</option>`;
-    }
-  }
-
-  service.addEventListener("change", loadTimes);
-  date.addEventListener("change", loadTimes);
-
-  form.addEventListener("submit", async e => {
-    if (!document.getElementById("agreeTerms").checked) {
-      e.preventDefault();
-      alert("You must agree to the Terms & Conditions.");
-      return;
-    }
-
-    const start_minutes = parseInt(timeSelect.value);
-    if (isNaN(start_minutes)) {
-      e.preventDefault();
-      alert("Please select a valid time.");
-      return;
-    }
-
-    const { error } = await supabase.from("bookings").insert([{
-      name: form.name.value,
-      email: form.email.value,
-      phone: form.phone.value,
-      category: service.value,
-      service: service.value,
-      date: date.value,
-      start_minutes,
-      details: form.details.value || "None"
-    }]);
-
-    if (error) {
-      e.preventDefault();
-      alert("That time was just booked. Please choose another.");
-      loadTimes();
-      return;
-    }
-
-    // EmailJS confirmation
-    emailjs.send("service_tpy3o7q", "template_7j2yea8", {
-      to_email: form.email.value,
-      name: form.name.value,
-      phone: form.phone.value,
-      service: service.value,
-      date: date.value,
-      time: minutesToLabel(start_minutes, durations[service.value]),
-      details: form.details.value || "None"
-    });
-
-    alert("Booking submitted successfully! A confirmation email has been sent.");
-    form.reset();
-    timeSelect.innerHTML = `<option value="">Select time</option>`;
-  });
-});
-                                                                                                                         document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", () => {
 
   // -----------------------------
-  // SUPABASE CLIENT (MUST EXIST)
+  // SUPABASE CLIENT
   // -----------------------------
   const supabase = window.supabase.createClient(
     "https://kuabmauutjchvvrfycxk.supabase.co",
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt1YWJtYXV1dGpjaHZ2cmZ5Y3hrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc4NDM2NjEsImV4cCI6MjA4MzQxOTY2MX0.7tNZxv8DD0qL23zRoFUgEWq7dby_2U6WgZiIie5hGWI"
+    "YOUR_ANON_KEY"
   );
 
-  // -----------------------------
-  // FORM ELEMENTS (MUST MATCH HTML)
-  // -----------------------------
   const form = document.getElementById("bookingForm");
   const service = form.service;
   const date = form.date;
@@ -131,7 +20,10 @@
   const durations = {
     "Home Cleaning": 120,
     "Window Cleaning": 60,
+    "Property Cleaning": 120,
+    "Interior Decoration": 120,
     "Babysitting": 240,
+    "Dog Walking": 60,
     "Event Staff": 180,
     "Delivery Assistance*": 60
   };
@@ -139,18 +31,16 @@
   // -----------------------------
   // TIME FORMATTER
   // -----------------------------
-  function minutesToLabel(start, duration) {
-    const end = start + duration;
+  function formatTime(minutes) {
+    const h = Math.floor(minutes / 60);
+    const m = minutes % 60;
+    const ampm = h >= 12 ? "PM" : "AM";
+    const dh = h % 12 || 12;
+    return `${dh}:${m.toString().padStart(2, "0")} ${ampm}`;
+  }
 
-    const format = (m) => {
-      const h = Math.floor(m / 60);
-      const min = m % 60;
-      const ampm = h >= 12 ? "PM" : "AM";
-      const displayHour = h % 12 || 12;
-      return `${displayHour}:${min.toString().padStart(2, "0")} ${ampm}`;
-    };
-
-    return `${format(start)} – ${format(end)}`;
+  function slotLabel(start, duration) {
+    return `${formatTime(start)} – ${formatTime(start + duration)}`;
   }
 
   // -----------------------------
@@ -158,31 +48,38 @@
   // -----------------------------
   async function loadTimes() {
     timeSelect.innerHTML = `<option value="">Select time</option>`;
-
     if (!service.value || !date.value) return;
 
-    const { data, error } = await supabase
+    const duration = durations[service.value] || 60;
+
+    const { data: bookings, error } = await supabase
       .from("bookings")
-      .select("start_minutes")
-      .eq("service", service.value)
+      .select("start_minutes, service")
       .eq("date", date.value);
 
     if (error) {
-      console.error("Supabase fetch error:", error);
+      console.error(error);
       return;
     }
 
-    const booked = data.map(row => row.start_minutes);
-    const duration = durations[service.value] || 60;
+    const blocked = bookings.map(b => {
+      const d = durations[b.service] || 60;
+      return { start: b.start_minutes, end: b.start_minutes + d };
+    });
 
-    // 7:30 AM (450) → 7:00 PM cutoff (1140)
     for (let start = 450; start + duration <= 1140; start += 30) {
-      if (booked.includes(start)) continue;
+      const end = start + duration;
 
-      const option = document.createElement("option");
-      option.value = start;
-      option.textContent = minutesToLabel(start, duration);
-      timeSelect.appendChild(option);
+      const overlaps = blocked.some(b =>
+        start < b.end && end > b.start
+      );
+
+      if (overlaps) continue;
+
+      const opt = document.createElement("option");
+      opt.value = start;
+      opt.textContent = slotLabel(start, duration);
+      timeSelect.appendChild(opt);
     }
 
     if (timeSelect.options.length === 1) {
@@ -193,9 +90,6 @@
     }
   }
 
-  // -----------------------------
-  // EVENT LISTENERS
-  // -----------------------------
   service.addEventListener("change", loadTimes);
   date.addEventListener("change", loadTimes);
 
@@ -203,48 +97,47 @@
   // FORM SUBMISSION
   // -----------------------------
   form.addEventListener("submit", async (e) => {
+    e.preventDefault();
 
     if (!agreeTerms.checked) {
-      e.preventDefault();
-      alert("You must agree to the Terms & Conditions before submitting.");
+      alert("You must agree to the Terms & Conditions.");
       return;
     }
 
-    const start_minutes = parseInt(timeSelect.value, 10);
-
+    const start_minutes = parseInt(timeSelect.value);
     if (isNaN(start_minutes)) {
-      e.preventDefault();
-      alert("Please select a valid time slot.");
+      alert("Please select a valid time.");
       return;
     }
 
-    // Insert booking FIRST (prevents double booking)
-    const { error } = await supabase
-      .from("bookings")
-      .insert([{
-        service: service.value,
-        date: date.value,
-        start_minutes
-      }]);
+    const { error } = await supabase.from("bookings").insert([{
+      name: form.name.value,
+      email: form.email.value,
+      phone: form.phone.value,
+      category: form.category.value,
+      service: service.value,
+      date: date.value,
+      start_minutes,
+      details: form.details.value || "None"
+    }]);
 
     if (error) {
-      e.preventDefault();
       alert("That time was just booked. Please choose another.");
       loadTimes();
       return;
     }
 
-    // EmailJS confirmation
-    emailjs.send(
-      "service_tpy3o7q",
-      "template_7j2yea8",
-      {
-        to_email: form.email.value,
-        service: service.value,
-        date: date.value,
-        time: minutesToLabel(start_minutes, durations[service.value])
-      }
-    );
-  });
+    emailjs.send("service_tpy3o7q", "template_7j2yea8", {
+      to_email: form.email.value,
+      name: form.name.value,
+      service: service.value,
+      date: date.value,
+      time: slotLabel(start_minutes, durations[service.value]),
+      details: form.details.value || "None"
+    });
 
+    alert("Booking confirmed!");
+    form.reset();
+    timeSelect.innerHTML = `<option value="">Select time</option>`;
+  });
 });
