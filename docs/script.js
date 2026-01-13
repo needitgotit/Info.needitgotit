@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // -----------------------------
   const supabase = window.supabase.createClient(
     "https://kuabmauutjchvvrfycxk.supabase.co",
-    "YOUR_ANON_KEY"
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt1YWJtYXV1dGpjaHZ2cmZ5Y3hrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc4NDM2NjEsImV4cCI6MjA4MzQxOTY2MX0.7tNZxv8DD0qL23zRoFUgEWq7dby_2U6WgZiIie5hGWI"
   );
 
   const form = document.getElementById("bookingForm");
@@ -13,6 +13,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const date = form.date;
   const timeSelect = form.time;
   const agreeTerms = document.getElementById("agreeTerms");
+
+  timeSelect.disabled = true;
 
   // -----------------------------
   // SERVICE DURATIONS (MINUTES)
@@ -29,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   // -----------------------------
-  // TIME FORMATTER
+  // TIME FORMATTERS
   // -----------------------------
   function formatTime(minutes) {
     const h = Math.floor(minutes / 60);
@@ -48,24 +50,26 @@ document.addEventListener("DOMContentLoaded", () => {
   // -----------------------------
   async function loadTimes() {
     timeSelect.innerHTML = `<option value="">Select time</option>`;
+    timeSelect.disabled = true;
+
     if (!service.value || !date.value) return;
 
     const duration = durations[service.value] || 60;
+    let blocked = [];
 
     const { data: bookings, error } = await supabase
       .from("bookings")
       .select("start_minutes, service")
       .eq("date", date.value);
 
-    if (error) {
-      console.error(error);
-      return;
+    if (!error && bookings) {
+      blocked = bookings.map(b => {
+        const d = durations[b.service] || 60;
+        return { start: b.start_minutes, end: b.start_minutes + d };
+      });
+    } else {
+      console.warn("Supabase unavailable — showing all times");
     }
-
-    const blocked = bookings.map(b => {
-      const d = durations[b.service] || 60;
-      return { start: b.start_minutes, end: b.start_minutes + d };
-    });
 
     for (let start = 450; start + duration <= 1140; start += 30) {
       const end = start + duration;
@@ -88,6 +92,8 @@ document.addEventListener("DOMContentLoaded", () => {
       opt.disabled = true;
       timeSelect.appendChild(opt);
     }
+
+    timeSelect.disabled = false;
   }
 
   service.addEventListener("change", loadTimes);
@@ -139,5 +145,6 @@ document.addEventListener("DOMContentLoaded", () => {
     alert("Booking confirmed!");
     form.reset();
     timeSelect.innerHTML = `<option value="">Select time</option>`;
+    timeSelect.disabled = true;
   });
 });
