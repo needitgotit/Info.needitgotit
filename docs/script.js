@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", () => {
+ document.addEventListener("DOMContentLoaded", () => {
 
   // -----------------------------
   // SUPABASE CLIENT
@@ -43,6 +43,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function slotLabel(start, duration) {
     return `${formatTime(start)} – ${formatTime(start + duration)}`;
+  }
+
+  // -----------------------------
+  // FIX: CONVERT TO EASTERN TIME
+  // -----------------------------
+  function toEasternMinutes(minutes) {
+    const date = new Date();
+    date.setHours(0, minutes, 0, 0);
+
+    const eastern = new Date(
+      date.toLocaleString("en-US", { timeZone: "America/New_York" })
+    );
+
+    return eastern.getHours() * 60 + eastern.getMinutes();
   }
 
   // -----------------------------
@@ -110,11 +124,14 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    const start_minutes = parseInt(timeSelect.value);
-    if (isNaN(start_minutes)) {
+    const rawStart = parseInt(timeSelect.value);
+    if (isNaN(rawStart)) {
       alert("Please select a valid time.");
       return;
     }
+
+    // FIX APPLIED HERE
+    const start_minutes = toEasternMinutes(rawStart);
 
     const { error } = await supabase.from("bookings").insert([{
       name: form.name.value,
@@ -138,7 +155,7 @@ document.addEventListener("DOMContentLoaded", () => {
       name: form.name.value,
       service: service.value,
       date: date.value,
-      time: slotLabel(start_minutes, durations[service.value]),
+      time: slotLabel(rawStart, durations[service.value]),
       details: form.details.value || "None"
     });
 
