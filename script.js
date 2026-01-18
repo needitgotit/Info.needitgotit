@@ -231,7 +231,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    // 4) Optional: send EmailJS notification
+    // 4) send EmailJS notification
     try {
       await emailjs.send("service_tpy3o7q", "template_7j2yea8", {
         name,
