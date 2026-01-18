@@ -239,6 +239,7 @@ document.addEventListener("DOMContentLoaded", () => {
   {
     name,
     email,
+    to_email: email,   // REQUIRED FIELD
     phone,
     category,
     service,
@@ -246,8 +247,9 @@ document.addEventListener("DOMContentLoaded", () => {
     time: arrivalSelect.options[arrivalSelect.selectedIndex].textContent,
     details
   },
-  "SU4xs5Go_As6GQEfL" // your EmailJS PUBLIC KEY
+  "SU4xs5Go_As6GQEfL"
 );
+
     } catch (err) {
       console.warn("EmailJS error (non-fatal):", err);
     }
