@@ -243,7 +243,7 @@ document.addEventListener("DOMContentLoaded", () => {
     category,
     service,
     date,
-    arrival_window: arrivalSelect.options[arrivalSelect.selectedIndex].textContent,
+    time: arrivalSelect.options[arrivalSelect.selectedIndex].textContent,
     details
   },
   "SU4xs5Go_As6GQEfL" // your EmailJS PUBLIC KEY
