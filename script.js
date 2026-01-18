@@ -233,16 +233,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // 4) send EmailJS notification
     try {
-      await emailjs.send("service_tpy3o7q", "template_7j2yea8", {
-        name,
-        email,
-        phone,
-        category,
-        service,
-        date,
-        arrival_window: arrivalSelect.options[arrivalSelect.selectedIndex].textContent,
-        details
-      });
+      await emailjs.send(
+  "service_tpy3o7q",
+  "template_7j2yea8",
+  {
+    name,
+    email,
+    phone,
+    category,
+    service,
+    date,
+    arrival_window: arrivalSelect.options[arrivalSelect.selectedIndex].textContent,
+    details
+  },
+  "SU4xs5Go_As6GQEfL" // your EmailJS PUBLIC KEY
+);
     } catch (err) {
       console.warn("EmailJS error (non-fatal):", err);
     }
