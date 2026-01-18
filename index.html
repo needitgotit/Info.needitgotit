@@ -5,22 +5,22 @@
   <title>Need It! Got It! | BOOK A SERVICE✨</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- CSS -->
+  <!-- FIXED PATH (GitHub Pages) -->
   <link rel="stylesheet" href="./style.css">
 
   <!-- Google Font -->
   <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
 
-  <!-- Supabase v2 -->
+  <!-- Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/supabase.min.js"></script>
 
   <!-- EmailJS -->
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
- <script>
-  emailjs.init({
-    publicKey: "SU4xs5Go_As6GQEfL",
-  });
-</script>
+  <script>
+    emailjs.init({
+      publicKey: "SU4xs5Go_As6GQEfL",
+    });
+  </script>
 </head>
 
 <body>
@@ -48,48 +48,47 @@
       </select>
 
       <label>Service</label>
-      <select name="service" id="serviceSelect" required>
+      <select name="service" required id="serviceSelect">
         <option value="">Select service</option>
 
         <optgroup label="HOME & PROPERTY SERVICES">
-          <option value="Home Cleaning">Home Cleaning</option>
-          <option value="Window Cleaning">Window Cleaning</option>
-          <option value="Property Cleaning">Property Cleaning</option>
-          <option value="Interior Decoration">Interior Decoration</option>
+          <option>Home Cleaning</option>
+          <option>Window Cleaning</option>
+          <option>Property Cleaning</option>
+          <option>Interior Decoration</option>
         </optgroup>
 
         <optgroup label="PERSONAL & CARE">
-          <option value="Babysitting">Babysitting</option>
-          <option value="Dog Walking">Dog Walking</option>
-          <option value="Personal Shopper">Personal Shopper</option>
-          <option value="Assistant">Assistant</option>
-          <option value="Delivery Assistance">Delivery Assistance*</option>
-          <option value="Etc.">Etc.</option>
+          <option>Babysitting</option>
+          <option>Dog Walking</option>
+          <option>Personal Shopper</option>
+          <option>Assistant</option>
+          <option>Delivery Assistance*</option>
+          <option>Etc.</option>
         </optgroup>
 
         <optgroup label="CREATIVE & MEDIA">
-          <option value="Vocalist">Vocalist</option>
-          <option value="Songwriting">Songwriting</option>
-          <option value="Model">Model</option>
-          <option value="Clothing Stylist">Clothing Stylist</option>
-          <option value="Food Reviewer">Food Reviewer</option>
+          <option>Vocalist</option>
+          <option>Songwriting</option>
+          <option>Model</option>
+          <option>Clothing Stylist</option>
+          <option>Food Reviewer</option>
         </optgroup>
 
         <optgroup label="EVENTS & PROMOTION">
-          <option value="Event Staff">Event Staff</option>
-          <option value="Cater Help">Cater Help</option>
-          <option value="Promoter">Promoter</option>
-          <option value="Sales">Sales</option>
+          <option>Event Staff</option>
+          <option>Cater Help</option>
+          <option>Promoter</option>
+          <option>Sales</option>
         </optgroup>
       </select>
 
       <label>Date</label>
-      <input type="date" name="date" id="dateInput" required>
+      <input type="date" name="date" required id="dateInput">
 
-      <!-- ARRIVAL WINDOW (instead of fixed time) -->
-      <label>Arrival Window</label>
-      <select name="time" id="arrivalWindowSelect" required>
-        <option value="">Select arrival window</option>
+      <label>Preferred Time</label>
+      <select name="time" required id="arrivalWindowSelect">
+        <option value="">Select time</option>
         <option value="08:00-10:00">8:00 AM – 10:00 AM</option>
         <option value="10:00-12:00">10:00 AM – 12:00 PM</option>
         <option value="12:00-14:00">12:00 PM – 2:00 PM</option>
@@ -104,68 +103,71 @@
       <div style="margin-top:20px; font-size:13px;">
         <details style="margin-bottom:10px;">
           <summary style="cursor:pointer; font-weight:bold;">Read Terms & Conditions</summary>
+
           <div style="max-height:220px; overflow-y:auto; padding:10px; border:1px solid #ccc; border-radius:6px; background:#fafafa;">
+
             <h3>TERMS & CONDITIONS</h3>
             <p><strong>Need It! Got It!</strong><br>
             Owner: James Brown<br>
             Effective Date: January 1, 2025</p>
 
-            <p>By submitting a booking request, receiving services, or otherwise engaging with Need It! Got It!, you agree to these Terms &amp; Conditions (“Agreement”). If you do not agree, do not book or receive services.</p>
+            <p>By submitting a booking request, receiving services, or otherwise engaging with Need It! Got It!, you agree to these Terms & Conditions (“Agreement”). If you do not agree, do not book or receive services.</p>
 
             <p><strong>1. Services Overview</strong><br>
             Need It! Got It! provides access to on-demand services across multiple categories, including but not limited to home services, labor assistance, personal support, creative services, pet-related services, childcare-related support, and event services. All services are subject to availability, request details, location, and conditions encountered. No service is guaranteed until confirmed.</p>
 
-            <p><strong>2. Booking, Arrival Windows &amp; Scheduling</strong><br>
+            <p><strong>2. Booking, Arrival Windows & Scheduling</strong><br>
             All bookings are scheduled using arrival windows, not guaranteed arrival times. Arrival windows provide flexibility for routing, preparation, traffic, weather, and prior service completion. While reasonable efforts are made to arrive within the selected window, exact arrival times are not guaranteed. Delays caused by factors beyond reasonable control do not constitute a breach of this Agreement.</p>
 
-            <p><strong>3. Service Duration, Minimum Charges &amp; Estimates</strong><br>
+            <p><strong>3. Service Duration, Minimum Charges & Estimates</strong><br>
             All service durations are estimates only. Most services are subject to a minimum billable time, regardless of actual time spent. Services exceeding the minimum may be billed in applicable increments depending on the service category. Pricing displayed as “From $X/hr” reflects base pricing only and may be adjusted based on scope, complexity, urgency, site conditions, or special requirements discovered before or during service.</p>
 
-            <p><strong>4. Scope of Work &amp; Client Responsibilities</strong><br>
-            Clients agree to provide accurate, complete, and truthful information when submitting a service request. If actual conditions differ materially from the request, Need It! Got It! may adjust pricing, extend service time, reschedule, or decline service. Clients are responsible for ensuring a safe, lawful, and accessible service environment, disclosure of hazards, and reasonable access to the service location. Services may be paused or discontinued if conditions are unsafe, illegal, or materially misrepresented.</p>
+            <p><strong>4. Scope of Work & Client Responsibilities</strong><br>
+            Clients agree to provide accurate, complete, and truthful information when submitting a service request. If actual conditions differ materially from the request, Need It! Got It! may adjust pricing, extend service time, reschedule, or decline service. Clients are responsible for ensuring a safe, lawful, and accessible service environment, disclosure of hazards, restrictions, or special conditions, and reasonable access to the service location. Services may be paused or discontinued if conditions are unsafe, illegal, or materially misrepresented.</p>
 
-            <p><strong>5. Property Condition &amp; Pre-Existing Damage Acknowledgment</strong><br>
+            <p><strong>5. Property Condition & Pre-Existing Damage Acknowledgment</strong><br>
             By booking services, clients acknowledge that pre-existing damage, wear, structural issues, or hidden defects may exist. Need It! Got It! is not responsible for pre-existing damage, normal wear and tear, or issues resulting from undisclosed conditions.</p>
 
-            <p><strong>6. Payments, Adjustments &amp; Non-Payment</strong><br>
-            Final pricing may be confirmed prior to service, upon arrival, or after completion, depending on the service category. Payment is due upon completion unless otherwise agreed. Failure to submit payment may result in additional fees, collection efforts, and denial of future service.</p>
+            <p><strong>6. Payments, Adjustments & Non-Payment</strong><br>
+            Payment is due upon completion unless otherwise agreed. Failure to submit payment may result in additional fees, collection efforts, and denial of future service.</p>
 
-            <p><strong>7. Cancellations &amp; No-Shows</strong><br>
+            <p><strong>7. Cancellations & No-Shows</strong><br>
             Cancellations or rescheduling should be made as early as possible. Late cancellations or no-shows may result in cancellation fees or charges up to the applicable minimum service fee.</p>
 
-            <p><strong>8. Independent Contractors &amp; No Employment Relationship</strong><br>
-            Services may be performed by independent contractors. Nothing in this Agreement creates an employer–employee, partnership, joint venture, or agency relationship. Need It! Got It! does not control the manner or means of service performance beyond reasonable coordination and quality standards.</p>
+            <p><strong>8. Independent Contractors & No Employment Relationship</strong><br>
+            Services may be performed by independent contractors. Nothing in this Agreement creates an employer–employee, partnership, joint venture, or agency relationship.</p>
 
             <p><strong>9. Assumption of Risk</strong><br>
-            Certain services involve inherent risks, including physical labor, use of tools, interaction with property, animals, children, or event environments. By booking services, clients voluntarily assume all ordinary and reasonable risks associated with the requested service.</p>
+            Certain services involve inherent risks, including physical labor, tools, property interaction, animals, children, or event environments. Clients voluntarily assume all ordinary risks associated with the requested service.</p>
 
             <p><strong>10. Limitation of Liability (Florida-Compliant)</strong><br>
-            To the fullest extent permitted under Florida law, Need It! Got It! and its owner shall not be liable for indirect, incidental, consequential, or special damages, including loss of use, profits, or data. Any liability arising from services provided under this Agreement shall be strictly limited to the amount paid for the specific service rendered, except where liability arises from gross negligence or intentional misconduct, which is not waived under Florida law.</p>
+            Need It! Got It! and its owner shall not be liable for indirect, incidental, consequential, or special damages. Liability is limited to the amount paid for the specific service rendered, except where gross negligence or intentional misconduct applies.</p>
 
-            <p><strong>11. Indemnification &amp; Hold Harmless</strong><br>
-            Clients agree to indemnify, defend, and hold harmless Need It! Got It!, its owner, contractors, and affiliates from any claims, damages, losses, liabilities, or expenses arising out of inaccurate or misleading service information, unsafe or unlawful conditions, client negligence, or violation of this Agreement.</p>
+            <p><strong>11. Indemnification & Hold Harmless</strong><br>
+            Clients agree to indemnify and hold harmless Need It! Got It! from claims arising out of inaccurate service information, unsafe conditions, negligence, or violations of this Agreement.</p>
 
-            <p><strong>12. Photo &amp; Documentation Consent</strong><br>
-            Clients consent to reasonable photo or video documentation of service conditions for quality assurance, training, or dispute resolution purposes. Personal identifying information will not be shared publicly without consent.</p>
+            <p><strong>12. Photo & Documentation Consent</strong><br>
+            Clients consent to reasonable photo or video documentation for quality assurance or dispute resolution.</p>
 
             <p><strong>13. Category-Specific Addendums</strong><br>
-            Childcare, pet services, and event services are subject to additional expectations and limitations as described in your full policy text.</p>
+            Childcare, pet services, and event services include additional expectations and limitations.</p>
 
             <p><strong>14. Right to Refuse or Terminate Services</strong><br>
-            Need It! Got It! reserves the right to refuse, suspend, or terminate services if safety concerns arise, requests are unlawful, expectations are unreasonable, or these Terms are violated.</p>
+            Need It! Got It! may refuse or terminate services if safety concerns arise or requests violate these Terms.</p>
 
-            <p><strong>15. Arbitration &amp; Waiver of Jury Trial</strong><br>
-            Any dispute arising from or relating to this Agreement shall be resolved through binding arbitration in the State of Florida. BY AGREEING TO THESE TERMS, YOU WAIVE THE RIGHT TO A TRIAL BY JURY OR TO PARTICIPATE IN A CLASS ACTION.</p>
+            <p><strong>15. Arbitration & Waiver of Jury Trial</strong><br>
+            Disputes shall be resolved through binding arbitration in Florida. Clients waive the right to a jury trial or class action.</p>
 
-            <p><strong>16–21.</strong> Additional provisions regarding insurance, business structure, modifications, governing law, severability, and acceptance apply as described in your full policy text.</p>
+            <p><strong>16–21.</strong> Additional provisions regarding insurance, business structure, modifications, governing law, severability, and acceptance apply.</p>
 
-            <p><strong>Acceptance:</strong> By submitting a booking request, checking the acceptance box, or receiving services, you confirm that you have read, understood, and agreed to these Terms &amp; Conditions.</p>
+            <p><strong>Acceptance:</strong> By submitting a booking request, checking the acceptance box, or receiving services, you confirm that you have read, understood, and agreed to these Terms & Conditions.</p>
+
           </div>
         </details>
 
         <label style="display:flex; align-items:flex-start; gap:8px;">
           <input type="checkbox" id="agreeTerms" required>
-          <span>I have read and agree to the Terms &amp; Conditions.</span>
+          <span>I have read and agree to the Terms & Conditions.</span>
         </label>
       </div>
 
@@ -177,6 +179,7 @@
     <p class="footer-note">You’ll receive a confirmation email after submitting.</p>
   </div>
 
+  <!-- ONE SCRIPT. ONE PATH. ONE EXECUTION -->
   <script src="./script.js"></script>
 </body>
 </html>
