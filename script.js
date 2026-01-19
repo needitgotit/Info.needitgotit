@@ -2,7 +2,6 @@
 // CONFIG: Supabase + business rules
 // ===============================
 
-// Supabase client (CDN v2)
 const SUPABASE_URL = "https://kuabmauutjchvvrfycxk.supabase.co";
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt1YWJtYXV1dGpjaHZ2cmZ5Y3hrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc4NDM2NjEsImV4cCI6MjA4MzQxOTY2MX0.7tNZxv8DD0qL23zRoFUgEWq7dby_2U6WgZiIie5hGWI";
 
@@ -47,7 +46,7 @@ function parseTimeToDate(timeStr) {
 }
 
 function formatDateToTimeStr(dateObj) {
-  return dateObj.toTimeString().slice(0, 5); // "HH:MM"
+  return dateObj.toTimeString().slice(0, 5);
 }
 
 function addMinutesToTimeStr(timeStr, minutes) {
@@ -75,12 +74,10 @@ function timesOverlap(startA, endA, startB, endB) {
 function canWindowFitService(arrivalStart, arrivalEnd, serviceMinutes) {
   const jobEnd = addMinutesToTimeStr(arrivalStart, serviceMinutes);
 
-  // Must not go past business cutoff
   if (isTimeAfter(jobEnd, BUSINESS_CUTOFF)) {
     return { ok: false, reason: "cutoff", jobEnd };
   }
 
-  // Must not exceed arrival window end (your stricter policy)
   if (isTimeAfter(jobEnd, arrivalEnd)) {
     return { ok: false, reason: "window-too-short", jobEnd };
   }
@@ -98,30 +95,13 @@ async function isSlotAvailable(date, arrivalStart, arrivalEnd, jobEnd) {
     .select("arrival_start, arrival_end, job_end")
     .eq("date", date);
 
-  if (error) {
-    console.error("Supabase error while checking availability:", error);
-    // Fail-safe: treat as unavailable or available; here we choose unavailable
-    return false;
-  }
+  if (error) return false;
 
   for (const appt of data) {
-    const existingArrivalStart = appt.arrival_start;
-    const existingArrivalEnd = appt.arrival_end;
-    const existingJobEnd = appt.job_end;
-
-    if (!existingArrivalStart || !existingArrivalEnd || !existingJobEnd) continue;
-
-    // 1) Arrival window overlap
-    if (timesOverlap(arrivalStart, arrivalEnd, existingArrivalStart, existingArrivalEnd)) {
-      return false;
-    }
-
-    // 2) Job duration overlap
-    const yourJobStart = arrivalStart;
-    const yourJobEnd = jobEnd;
-    const existingJobStart = existingArrivalStart;
-
-    if (timesOverlap(yourJobStart, yourJobEnd, existingJobStart, existingJobEnd)) {
+    if (
+      timesOverlap(arrivalStart, arrivalEnd, appt.arrival_start, appt.arrival_end) ||
+      timesOverlap(arrivalStart, jobEnd, appt.arrival_start, appt.job_end)
+    ) {
       return false;
     }
   }
@@ -154,13 +134,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const service = formData.get("service");
     const date = formData.get("date");
     const details = formData.get("details") || "";
-    const arrivalValue = formData.get("time"); // "HH:MM-HH:MM"
-
-    if (!name || !email || !phone || !category || !service || !date || !arrivalValue) {
-      messageEl.textContent = "Please complete all required fields.";
-      messageEl.classList.add("error");
-      return;
-    }
+    const arrivalValue = formData.get("time");
 
     if (!agreeTerms.checked) {
       messageEl.textContent = "You must agree to the Terms & Conditions before booking.";
@@ -171,41 +145,22 @@ document.addEventListener("DOMContentLoaded", () => {
     const serviceMinutes = SERVICE_MIN_DURATION[service] || 60;
     const [arrivalStart, arrivalEnd] = arrivalValue.split("-");
 
-    // 1) Check if window can fit the service
     const fit = canWindowFitService(arrivalStart, arrivalEnd, serviceMinutes);
-
     if (!fit.ok) {
-      const label = arrivalSelect.options[arrivalSelect.selectedIndex].textContent.trim();
-
-      if (fit.reason === "window-too-short") {
-        messageEl.textContent =
-          `This service requires a minimum of ${serviceMinutes / 60} hours. ` +
-          `${label} window cannot accommodate this service. ` +
-          `Please choose an earlier arrival window.`;
-      } else if (fit.reason === "cutoff") {
-        messageEl.textContent =
-          "This service cannot be scheduled in this window without exceeding our business-day cutoff. Please choose an earlier arrival window.";
-      } else {
-        messageEl.textContent = "This arrival window cannot accommodate the selected service.";
-      }
-
+      messageEl.textContent = "This arrival window cannot accommodate the selected service.";
       messageEl.classList.add("error");
       return;
     }
 
     const jobEnd = fit.jobEnd;
 
-    // 2) Check for double-booking / overlap
     const available = await isSlotAvailable(date, arrivalStart, arrivalEnd, jobEnd);
-
     if (!available) {
-      messageEl.textContent =
-        "This arrival window is no longer available due to an existing booking. Please choose another window.";
+      messageEl.textContent = "This arrival window is no longer available.";
       messageEl.classList.add("error");
       return;
     }
 
-    // 3) Save booking in Supabase
     const { error: insertError } = await supabase
       .from("bookings")
       .insert([
@@ -224,41 +179,36 @@ document.addEventListener("DOMContentLoaded", () => {
       ]);
 
     if (insertError) {
-      console.error("Error saving booking:", insertError);
-      messageEl.textContent =
-        "There was an issue saving your booking. Please try again or contact us directly.";
+      messageEl.textContent = "There was an issue saving your booking.";
       messageEl.classList.add("error");
       return;
     }
 
-    // 4) send EmailJS notification
+    // ===============================
+    // CORRECT EmailJS block (classic SDK)
+    // ===============================
     try {
       await emailjs.send(
-  "service_tpy3o7q",
-  "template_7j2yea8",
-  {
-    name,
-    email,
-    to_email: email,   // REQUIRED FIELD
-    phone,
-    category,
-    service,
-    date,
-    time: arrivalSelect.options[arrivalSelect.selectedIndex].textContent,
-    details
-  },
-  "SU4xs5Go_As6GQEfL"
-);
-
+        "service_tpy3o7q",
+        "template_7j2yea8",
+        {
+          to_email: email,
+          name,
+          phone,
+          category,
+          service,
+          date,
+          time: arrivalSelect.options[arrivalSelect.selectedIndex].textContent,
+          details
+        },
+        "SU4xs5Go_As6GQEfL"
+      );
     } catch (err) {
-      console.warn("EmailJS error (non-fatal):", err);
+      console.warn("EmailJS error:", err);
     }
 
-    // 5) Success message
     messageEl.textContent = "Your booking request has been submitted successfully.";
     messageEl.classList.add("success");
-
-    // Optionally reset form
     form.reset();
   });
 });
