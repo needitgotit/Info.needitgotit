@@ -1,214 +1,154 @@
-// ===============================
-// CONFIG: Supabase + business rules
-// ===============================
-
-const SUPABASE_URL = "https://kuabmauutjchvvrfycxk.supabase.co";
-const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt1YWJtYXV1dGpjaHZ2cmZ5Y3hrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc4NDM2NjEsImV4cCI6MjA4MzQxOTY2MX0.7tNZxv8DD0qL23zRoFUgEWq7dby_2U6WgZiIie5hGWI";
-
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-// Business cutoff: 7:30 PM
-const BUSINESS_CUTOFF = "19:30";
-
-// Minimum billable duration per service (minutes)
-const SERVICE_MIN_DURATION = {
-  "Home Cleaning": 120,
-  "Window Cleaning": 120,
-  "Property Cleaning": 180,
-  "Interior Decoration": 180,
-
-  "Babysitting": 180,
-  "Dog Walking": 60,
-  "Personal Shopper": 120,
-  "Assistant": 120,
-  "Delivery Assistance": 60,
-  "Etc.": 60,
-
-  "Vocalist": 120,
-  "Songwriting": 120,
-  "Model": 120,
-  "Clothing Stylist": 120,
-  "Food Reviewer": 60,
-
-  "Event Staff": 180,
-  "Cater Help": 180,
-  "Promoter": 120,
-  "Sales": 120
-};
-
-// ===============================
-// Time helpers
-// ===============================
-
-function parseTimeToDate(timeStr) {
-  const [h, m] = timeStr.split(":").map(Number);
-  return new Date(0, 0, 0, h, m);
-}
-
-function formatDateToTimeStr(dateObj) {
-  return dateObj.toTimeString().slice(0, 5);
-}
-
-function addMinutesToTimeStr(timeStr, minutes) {
-  const d = parseTimeToDate(timeStr);
-  d.setMinutes(d.getMinutes() + minutes);
-  return formatDateToTimeStr(d);
-}
-
-function isTimeAfter(t1, t2) {
-  return parseTimeToDate(t1) > parseTimeToDate(t2);
-}
-
-function timesOverlap(startA, endA, startB, endB) {
-  const aStart = parseTimeToDate(startA);
-  const aEnd = parseTimeToDate(endA);
-  const bStart = parseTimeToDate(startB);
-  const bEnd = parseTimeToDate(endB);
-  return aStart < bEnd && bStart < aEnd;
-}
-
-// ===============================
-// Window fit check
-// ===============================
-
-function canWindowFitService(arrivalStart, arrivalEnd, serviceMinutes) {
-  const jobEnd = addMinutesToTimeStr(arrivalStart, serviceMinutes);
-
-  if (isTimeAfter(jobEnd, BUSINESS_CUTOFF)) {
-    return { ok: false, reason: "cutoff", jobEnd };
-  }
-
-  if (isTimeAfter(jobEnd, arrivalEnd)) {
-    return { ok: false, reason: "window-too-short", jobEnd };
-  }
-
-  return { ok: true, jobEnd };
-}
-
-// ===============================
-// Supabase: check overlapping bookings
-// ===============================
-
-async function isSlotAvailable(date, arrivalStart, arrivalEnd, jobEnd) {
-  const { data, error } = await supabase
-    .from("bookings")
-    .select("arrival_start, arrival_end, job_end")
-    .eq("date", date);
-
-  if (error) return false;
-
-  for (const appt of data) {
-    if (
-      timesOverlap(arrivalStart, arrivalEnd, appt.arrival_start, appt.arrival_end) ||
-      timesOverlap(arrivalStart, jobEnd, appt.arrival_start, appt.job_end)
-    ) {
-      return false;
-    }
-  }
-
-  return true;
-}
-
-// ===============================
-// Form handling
-// ===============================
-
 document.addEventListener("DOMContentLoaded", () => {
+
+  const supabase = window.supabase.createClient(
+    "https://kuabmauutjchvvrfycxk.supabase.co",
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt1YWJtYXV1dGpjaHZ2cmZ5Y3hrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc4NDM2NjEsImV4cCI6MjA4MzQxOTY2MX0.7tNZxv8DD0qL23zRoFUgEWq7dby_2U6WgZiIie5hGWI"
+  );
+
   const form = document.getElementById("bookingForm");
-  const serviceSelect = document.getElementById("serviceSelect");
-  const dateInput = document.getElementById("dateInput");
-  const arrivalSelect = document.getElementById("arrivalWindowSelect");
+  const service = form.service;
+  const date = form.date;
+  const timeSelect = form.time;
   const agreeTerms = document.getElementById("agreeTerms");
-  const messageEl = document.getElementById("bookingMessage");
+
+  timeSelect.disabled = true;
+
+  const durations = {
+    "Home Cleaning": 120,
+    "Window Cleaning": 60,
+    "Property Cleaning": 120,
+    "Interior Decoration": 120,
+    "Babysitting": 240,
+    "Dog Walking": 60,
+    "Event Staff": 180,
+    "Delivery Assistance*": 60
+  };
+
+  function formatTime(minutes) {
+    const h = Math.floor(minutes / 60);
+    const m = minutes % 60;
+    const ampm = h >= 12 ? "PM" : "AM";
+    const dh = h % 12 || 12;
+    return `${dh}:${m.toString().padStart(2, "0")} ${ampm}`;
+  }
+
+  function slotLabel(start, duration) {
+    return `${formatTime(start)} – ${formatTime(start + duration)}`;
+  }
+
+  function toEasternMinutes(minutes) {
+    const date = new Date();
+    date.setHours(0, minutes, 0, 0);
+
+    const eastern = new Date(
+      date.toLocaleString("en-US", { timeZone: "America/New_York" })
+    );
+
+    return eastern.getHours() * 60 + eastern.getMinutes();
+  }
+
+  async function loadTimes() {
+    timeSelect.innerHTML = `<option value="">Select time</option>`;
+    timeSelect.disabled = true;
+
+    if (!service.value || !date.value) return;
+
+    const duration = durations[service.value] || 60;
+    let blocked = [];
+
+    const { data: bookings, error } = await supabase
+      .from("bookings")
+      .select("start_minutes, service")
+      .eq("date", date.value);
+
+    if (!error && bookings) {
+      blocked = bookings.map(b => {
+        const d = durations[b.service] || 60;
+        return { start: b.start_minutes, end: b.start_minutes + d };
+      });
+    }
+
+    for (let start = 450; start + duration <= 1140; start += 30) {
+      const end = start + duration;
+
+      const overlaps = blocked.some(b =>
+        start < b.end && end > b.start
+      );
+
+      if (overlaps) continue;
+
+      const opt = document.createElement("option");
+      opt.value = start;
+      opt.textContent = slotLabel(start, duration);
+      timeSelect.appendChild(opt);
+    }
+
+    if (timeSelect.options.length === 1) {
+      const opt = document.createElement("option");
+      opt.textContent = "No availability";
+      opt.disabled = true;
+      timeSelect.appendChild(opt);
+    }
+
+    timeSelect.disabled = false;
+  }
+
+  service.addEventListener("change", loadTimes);
+  date.addEventListener("change", loadTimes);
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
-    messageEl.textContent = "";
-    messageEl.className = "booking-message";
-
-    const formData = new FormData(form);
-    const name = formData.get("name");
-    const email = formData.get("email");
-    const phone = formData.get("phone");
-    const category = formData.get("category");
-    const service = formData.get("service");
-    const date = formData.get("date");
-    const details = formData.get("details") || "";
-    const arrivalValue = formData.get("time");
 
     if (!agreeTerms.checked) {
-      messageEl.textContent = "You must agree to the Terms & Conditions before booking.";
-      messageEl.classList.add("error");
+      alert("You must agree to the Terms & Conditions.");
       return;
     }
 
-    const serviceMinutes = SERVICE_MIN_DURATION[service] || 60;
-    const [arrivalStart, arrivalEnd] = arrivalValue.split("-");
-
-    const fit = canWindowFitService(arrivalStart, arrivalEnd, serviceMinutes);
-    if (!fit.ok) {
-      messageEl.textContent = "This arrival window cannot accommodate the selected service.";
-      messageEl.classList.add("error");
+    const rawStart = parseInt(timeSelect.value);
+    if (isNaN(rawStart)) {
+      alert("Please select a valid time.");
       return;
     }
 
-    const jobEnd = fit.jobEnd;
+    const start_minutes = toEasternMinutes(rawStart);
 
-    const available = await isSlotAvailable(date, arrivalStart, arrivalEnd, jobEnd);
-    if (!available) {
-      messageEl.textContent = "This arrival window is no longer available.";
-      messageEl.classList.add("error");
+    const { error } = await supabase.from("bookings").insert([{
+      name: form.name.value,
+      email: form.email.value,
+      phone: form.phone.value,
+      category: form.category.value,
+      service: service.value,
+      date: date.value,
+      start_minutes,
+      details: form.details.value || "None"
+    }]);
+
+    if (error) {
+      alert("That time was just booked. Please choose another.");
+      loadTimes();
       return;
     }
 
-    const { error: insertError } = await supabase
-      .from("bookings")
-      .insert([
-        {
-          name,
-          email,
-          phone,
-          category,
-          service,
-          date,
-          arrival_start: arrivalStart,
-          arrival_end: arrivalEnd,
-          job_end: jobEnd,
-          details
-        }
-      ]);
+    // ----------------------------------------------------
+    // ORIGINAL WORKING EMAILJS BLOCK (RESTORED)
+    // ----------------------------------------------------
+    emailjs.send(
+      "service_tpy3o7q",
+      "template_7j2yea8",
+      {
+        to_email: form.email.value,
+        name: form.name.value,
+        service: service.value,
+        date: date.value,
+        time: slotLabel(rawStart, durations[service.value]),
+        details: form.details.value || "None"
+      },
+      "SU4xs5Go_As6GQEfL"
+    );
 
-    if (insertError) {
-      messageEl.textContent = "There was an issue saving your booking.";
-      messageEl.classList.add("error");
-      return;
-    }
-
-    // ===============================
-    // CORRECT EmailJS block (classic SDK)
-    // ===============================
-    try {
-      await emailjs.send(
-        "service_tpy3o7q",
-        "template_7j2yea8",
-        {
-          to_email: email,
-          name,
-          phone,
-          category,
-          service,
-          date,
-          time: arrivalSelect.options[arrivalSelect.selectedIndex].textContent,
-          details
-        },
-        "SU4xs5Go_As6GQEfL"
-      );
-    } catch (err) {
-      console.warn("EmailJS error:", err);
-    }
-
-    messageEl.textContent = "Your booking request has been submitted successfully.";
-    messageEl.classList.add("success");
+    alert("Booking confirmed!");
     form.reset();
+    timeSelect.innerHTML = `<option value="">Select time</option>`;
+    timeSelect.disabled = true;
   });
 });
