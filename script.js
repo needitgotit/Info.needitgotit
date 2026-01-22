@@ -129,9 +129,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    // ----------------------------------------------------
-    // ORIGINAL WORKING EMAILJS BLOCK (RESTORED)
-    // ----------------------------------------------------
+    // ORIGINAL WORKING EMAILJS BLOCK
     emailjs.send(
       "service_tpy3o7q",
       "template_7j2yea8",
