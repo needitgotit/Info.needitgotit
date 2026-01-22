@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", () => {
+ document.addEventListener("DOMContentLoaded", () => {
 
   const supabase = window.supabase.createClient(
     "https://kuabmauutjchvvrfycxk.supabase.co",
