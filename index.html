@@ -1,152 +1,196 @@
-document.addEventListener("DOMContentLoaded", () => {
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Need It! Got It! | BOOK A SERVICE✨</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  const supabase = window.supabase.createClient(
-    "https://kuabmauutjchvvrfycxk.supabase.co",
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt1YWJtYXV1dGpjaHZ2cmZ5Y3hrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc4NDM2NjEsImV4cCI6MjA4MzQxOTY2MX0.7tNZxv8DD0qL23zRoFUgEWq7dby_2U6WgZiIie5hGWI"
-  );
+  <link rel="stylesheet" href="/Info.needitgotit/style.css">
 
-  const form = document.getElementById("bookingForm");
-  const service = form.service;
-  const date = form.date;
-  const timeSelect = form.time;
-  const agreeTerms = document.getElementById("agreeTerms");
+  <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
 
-  timeSelect.disabled = true;
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/supabase.min.js"></script>
 
-  const durations = {
-    "Home Cleaning": 120,
-    "Window Cleaning": 60,
-    "Property Cleaning": 120,
-    "Interior Decoration": 120,
-    "Babysitting": 240,
-    "Dog Walking": 60,
-    "Event Staff": 180,
-    "Delivery Assistance*": 60
-  };
+  <!-- CLASSIC EMAILJS SDK (THE ONE THAT WORKED) -->
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+  <script>
+    emailjs.init("SU4xs5Go_As6GQEfL");
+  </script>
+</head>
 
-  function formatTime(minutes) {
-    const h = Math.floor(minutes / 60);
-    const m = minutes % 60;
-    const ampm = h >= 12 ? "PM" : "AM";
-    const dh = h % 12 || 12;
-    return `${dh}:${m.toString().padStart(2, "0")} ${ampm}`;
-  }
+<body>
+  <div class="container">
+    <h1>BOOK A SERVICE✨</h1>
+    <p class="subtitle">Fast • Reliable • Transparent Pricing</p>
 
-  function slotLabel(start, duration) {
-    return `${formatTime(start)} – ${formatTime(start + duration)}`;
-  }
+    <form id="bookingForm">
+      <label>Full Name</label>
+      <input type="text" name="name" required>
 
-  function toEasternMinutes(minutes) {
-    const date = new Date();
-    date.setHours(0, minutes, 0, 0);
+      <label>Email Address</label>
+      <input type="email" name="email" required>
 
-    const eastern = new Date(
-      date.toLocaleString("en-US", { timeZone: "America/New_York" })
-    );
+      <label>Phone Number</label>
+      <input type="tel" name="phone" required>
 
-    return eastern.getHours() * 60 + eastern.getMinutes();
-  }
+      <label>Service Category</label>
+      <select name="category" required>
+        <option value="">Select category</option>
+        <option>Home & Property</option>
+        <option>Personal & Care</option>
+        <option>Creative & Media</option>
+        <option>Events & Promotion</option>
+      </select>
 
-  async function loadTimes() {
-    timeSelect.innerHTML = `<option value="">Select time</option>`;
-    timeSelect.disabled = true;
+      <label>Service</label>
+      <select name="service" required>
+        <option value="">Select service</option>
 
-    if (!service.value || !date.value) return;
+        <optgroup label="HOME & PROPERTY SERVICES">
+          <option>Home Cleaning</option>
+          <option>Window Cleaning</option>
+          <option>Property Cleaning</option>
+          <option>Interior Decoration</option>
+        </optgroup>
 
-    const duration = durations[service.value] || 60;
-    let blocked = [];
+        <optgroup label="PERSONAL & CARE">
+          <option>Babysitting</option>
+          <option>Dog Walking</option>
+          <option>Personal Shopper</option>
+          <option>Assistant</option>
+          <option>Delivery Assistance*</option>
+          <option>Etc.</option>
+        </optgroup>
 
-    const { data: bookings, error } = await supabase
-      .from("bookings")
-      .select("start_minutes, service")
-      .eq("date", date.value);
+        <optgroup label="CREATIVE & MEDIA">
+          <option>Vocalist</option>
+          <option>Songwriting</option>
+          <option>Model</option>
+          <option>Clothing Stylist</option>
+          <option>Food Reviewer</option>
+        </optgroup>
 
-    if (!error && bookings) {
-      blocked = bookings.map(b => {
-        const d = durations[b.service] || 60;
-        return { start: b.start_minutes, end: b.start_minutes + d };
-      });
-    }
+        <optgroup label="EVENTS & PROMOTION">
+          <option>Event Staff</option>
+          <option>Cater Help</option>
+          <option>Promoter</option>
+          <option>Sales</option>
+        </optgroup>
+      </select>
 
-    for (let start = 450; start + duration <= 1140; start += 30) {
-      const end = start + duration;
+      <label>Date</label>
+      <input type="date" name="date" required>
 
-      const overlaps = blocked.some(b =>
-        start < b.end && end > b.start
-      );
+      <label>Preferred Time</label>
+      <select name="time" required>
+        <option value="">Select time</option>
+      </select>
 
-      if (overlaps) continue;
+      <label>Additional Details</label>
+      <textarea name="details" placeholder="Tell us anything we should know..."></textarea>
 
-      const opt = document.createElement("option");
-      opt.value = start;
-      opt.textContent = slotLabel(start, duration);
-      timeSelect.appendChild(opt);
-    }
+      <!-- TERMS & CONDITIONS -->
+      <div style="margin-top:20px; font-size:13px;">
+        <details style="margin-bottom:10px;">
+          <summary style="cursor:pointer; font-weight:bold;">Read Terms & Conditions</summary>
 
-    if (timeSelect.options.length === 1) {
-      const opt = document.createElement("option");
-      opt.textContent = "No availability";
-      opt.disabled = true;
-      timeSelect.appendChild(opt);
-    }
+          <div style="max-height:220px; overflow-y:auto; padding:10px; border:1px solid #ccc; border-radius:6px; background:#fafafa;">
 
-    timeSelect.disabled = false;
-  }
+            <!-- FULL POLICY EXACTLY AS YOU PROVIDED -->
+            <h3>TERMS & CONDITIONS</h3>
+            <p><strong>Need It! Got It!</strong><br>
+            Owner: James Brown<br>
+            Effective Date: January 1, 2025</p>
 
-  service.addEventListener("change", loadTimes);
-  date.addEventListener("change", loadTimes);
+            <p>By submitting a booking request, receiving services, or otherwise engaging with Need It! Got It!, you agree to these Terms & Conditions (“Agreement”). If you do not agree, do not book or receive services.</p>
 
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
+            <p><strong>1. Services Overview</strong><br>
+            Need It! Got It! provides access to on-demand services across multiple categories, including but not limited to home services, labor assistance, personal support, creative services, pet-related services, childcare-related support, and event services. All services are subject to availability, request details, location, and conditions encountered. No service is guaranteed until confirmed.</p>
 
-    if (!agreeTerms.checked) {
-      alert("You must agree to the Terms & Conditions.");
-      return;
-    }
+            <p><strong>2. Booking, Arrival Windows & Scheduling</strong><br>
+            All bookings are scheduled using arrival windows, not guaranteed arrival times. Arrival windows provide flexibility for routing, preparation, traffic, weather, and prior service completion. While reasonable efforts are made to arrive within the selected window, exact arrival times are not guaranteed. Delays caused by factors beyond reasonable control do not constitute a breach of this Agreement.</p>
 
-    const rawStart = parseInt(timeSelect.value);
-    if (isNaN(rawStart)) {
-      alert("Please select a valid time.");
-      return;
-    }
+            <p><strong>3. Service Duration, Minimum Charges & Estimates</strong><br>
+            All service durations are estimates only. Most services are subject to a minimum billable time, regardless of actual time spent. Services exceeding the minimum may be billed in applicable increments depending on the service category. Pricing displayed as “From $X/hr” reflects base pricing only and may be adjusted based on scope, complexity, urgency, site conditions, or special requirements discovered before or during service.</p>
 
-    const start_minutes = toEasternMinutes(rawStart);
+            <p><strong>4. Scope of Work & Client Responsibilities</strong><br>
+            Clients agree to provide accurate, complete, and truthful information when submitting a service request. If actual conditions differ materially from the request, Need It! Got It! may adjust pricing, extend service time, reschedule, or decline service. Clients are responsible for ensuring a safe, lawful, and accessible service environment, disclosure of hazards, restrictions, or special conditions, and reasonable access to the service location. Services may be paused or discontinued if conditions are unsafe, illegal, or materially misrepresented.</p>
 
-    const { error } = await supabase.from("bookings").insert([{
-      name: form.name.value,
-      email: form.email.value,
-      phone: form.phone.value,
-      category: form.category.value,
-      service: service.value,
-      date: date.value,
-      start_minutes,
-      details: form.details.value || "None"
-    }]);
+            <p><strong>5. Property Condition & Pre-Existing Damage Acknowledgment</strong><br>
+            By booking services, clients acknowledge that pre-existing damage, wear, structural issues, or hidden defects may exist. Need It! Got It! is not responsible for pre-existing damage, normal wear and tear, or issues resulting from undisclosed conditions.</p>
 
-    if (error) {
-      alert("That time was just booked. Please choose another.");
-      loadTimes();
-      return;
-    }
+            <p><strong>6. Payments, Adjustments & Non-Payment</strong><br>
+            Payment is due upon completion unless otherwise agreed. Failure to submit payment may result in additional fees, collection efforts, and denial of future service.</p>
 
-    // ORIGINAL WORKING EMAILJS BLOCK
-    emailjs.send(
-      "service_tpy3o7q",
-      "template_7j2yea8",
-      {
-        to_email: form.email.value,
-        name: form.name.value,
-        service: service.value,
-        date: date.value,
-        time: slotLabel(rawStart, durations[service.value]),
-        details: form.details.value || "None"
-      },
-      "SU4xs5Go_As6GQEfL"
-    );
+            <p><strong>7. Cancellations & No-Shows</strong><br>
+            Cancellations or rescheduling should be made as early as possible. Late cancellations or no-shows may result in cancellation fees or charges up to the applicable minimum service fee.</p>
 
-    alert("Booking confirmed!");
-    form.reset();
-    timeSelect.innerHTML = `<option value="">Select time</option>`;
-    timeSelect.disabled = true;
-  });
-});
+            <p><strong>8. Independent Contractors & No Employment Relationship</strong><br>
+            Services may be performed by independent contractors. Nothing in this Agreement creates an employer–employee, partnership, joint venture, or agency relationship.</p>
+
+            <p><strong>9. Assumption of Risk</strong><br>
+            Certain services involve inherent risks, including physical labor, tools, property interaction, animals, children, or event environments. Clients voluntarily assume all ordinary risks associated with the requested service.</p>
+
+            <p><strong>10. Limitation of Liability (Florida-Compliant)</strong><br>
+            Need It! Got It! and its owner shall not be liable for indirect, incidental, consequential, or special damages. Liability is limited to the amount paid for the specific service rendered, except where gross negligence or intentional misconduct applies.</p>
+
+            <p><strong>11. Indemnification & Hold Harmless</strong><br>
+            Clients agree to indemnify and hold harmless Need It! Got It! from claims arising out of inaccurate service information, unsafe conditions, negligence, or violations of this Agreement.</p>
+
+            <p><strong>12. Photo & Documentation Consent</strong><br>
+            Clients consent to reasonable photo or video documentation for quality assurance, training, or dispute resolution purposes. Personal identifying information will not be shared publicly without consent.</p>
+
+            <p><strong>13. Category-Specific Addendums</strong><br>
+            A. Childcare / Child-Related Services<br>
+            Services involving minors are limited to the agreed scope. Need It! Got It! does not replace parental or legal guardianship responsibility. Clients remain solely responsible for supervision, health disclosures, and safety unless otherwise agreed in writing.</p>
+
+            <p>B. Pet Services<br>
+            Clients are responsible for disclosing pet behavior, medical conditions, and handling requirements. Need It! Got It! is not liable for injury caused by animals or issues arising from undisclosed conditions.</p>
+
+            <p>C. Event & Group Services<br>
+            Event services are subject to environmental, attendee, venue, and third-party variables. Need It! Got It! is not responsible for disruptions outside the agreed scope, including those caused by weather, attendees, or venue restrictions.</p>
+
+            <p><strong>14. Right to Refuse or Terminate Services</strong><br>
+            Need It! Got It! reserves the right to refuse, suspend, or terminate services if safety concerns arise, requests are unlawful, expectations are unreasonable, or these Terms are violated.</p>
+
+            <p><strong>15. Arbitration & Waiver of Jury Trial (IMPORTANT)</strong><br>
+            Any dispute arising from or relating to this Agreement or services provided shall be resolved through binding arbitration in the State of Florida, in accordance with the Florida Arbitration Code.<br>
+            BY AGREEING TO THESE TERMS, YOU WAIVE THE RIGHT TO A TRIAL BY JURY OR TO PARTICIPATE IN A CLASS ACTION.<br>
+            Each party shall bear its own arbitration costs unless otherwise required by law.</p>
+
+            <p><strong>16. Insurance Disclosure</strong><br>
+            Need It! Got It! maintains reasonable business practices but does not guarantee insurance coverage for all service types or scenarios unless expressly stated. Clients are encouraged to maintain their own applicable coverage.</p>
+
+            <p><strong>17. Business Structure</strong><br>
+            Need It! Got It! is currently operated as a sole proprietorship owned by James Brown. The business reserves the right to transition to a limited liability company (LLC) or other legal entity without affecting this Agreement.</p>
+
+            <p><strong>18. Modifications to Terms</strong><br>
+            These Terms & Conditions may be updated periodically. Continued use of services after changes are posted constitutes acceptance of the revised terms.</p>
+
+            <p><strong>19. Governing Law & Venue</strong><br>
+            This Agreement shall be governed by and interpreted under the laws of the State of Florida, without regard to conflict-of-law principles.</p>
+
+            <p><strong>20. Entire Agreement & Severability</strong><br>
+            This Agreement constitutes the entire understanding between the parties. If any provision is found unenforceable, the remaining provisions shall remain in full force and effect.</p>
+
+            <p><strong>21. Acceptance</strong><br>
+            By submitting a booking request, checking the acceptance box, or receiving services, you confirm that you have read, understood, and agreed to these Terms & Conditions.</p>
+
+          </div>
+        </details>
+
+        <label style="display:flex; align-items:flex-start; gap:8px;">
+          <input type="checkbox" id="agreeTerms" required>
+          <span>I have read and agree to the Terms & Conditions</span>
+        </label>
+      </div>
+
+      <button type="submit">Submit Booking</button>
+    </form>
+
+    <p class="footer-note">You’ll receive a confirmation email after submitting.</p>
+  </div>
+
+  <script src="/Info.needitgotit/script.js"></script>
+</body>
+</html>
