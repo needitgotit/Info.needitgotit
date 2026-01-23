@@ -1,154 +1,123 @@
-<!DOCTYPE html>
+  <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Need It! Got It! | BOOK A SERVICE✨</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <link rel="stylesheet" href="/Info.needitgotit/style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/supabase.min.js"></script>
-
-  <!-- CLASSIC EMAILJS SDK -->
-  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
-  <script>
-    emailjs.init("SU4xs5Go_As6GQEfL");
-  </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Need It! Got It! - Book Your Service</title>
+    <link rel="stylesheet" href__="styles.css">
 </head>
-
 <body>
-  <div class="container">
-    <h1>BOOK A SERVICE✨</h1>
-    <p class="subtitle">Fast • Reliable • Transparent Pricing</p>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <h1>NEED IT! <span>GOT IT!</span></h1>
+            </div>
+            <p class="tagline">On-Demand Help. One Trusted Call.</p>
+        </header>
 
-    <form id="bookingForm">
-      <label>Full Name</label>
-      <input type="text" name="name" required>
+        <main>
+            <div class="booking-card">
+                <h2>Book Your Service</h2>
+                <form id="bookingForm">
+                    <!-- Service Category -->
+                    <div class="form-group">
+                        <label for="serviceCategory">Service Category *</label>
+                        <select id="serviceCategory" name="service_category" required>
+                            <option value="">Select a category...</option>
+                            <option value="home_property">Home & Property</option>
+                            <option value="personal_care">Personal Care</option>
+                            <option value="creative_media">Creative & Media</option>
+                            <option value="events_promotion">Events & Promotion</option>
+                        </select>
+                    </div>
 
-      <label>Email Address</label>
-      <input type="email" name="email" required>
+                    <!-- Service Type -->
+                    <div class="form-group">
+                        <label for="serviceType">Service Type *</label>
+                        <select id="serviceType" name="service_type" required>
+                            <option value="">Select a service...</option>
+                        </select>
+                    </div>
 
-      <label>Phone Number</label>
-      <input type="tel" name="phone" required>
+                    <!-- Customer Name -->
+                    <div class="form-group">
+                        <label for="customerName">Full Name *</label>
+                        <input type="text" id="customerName" name="customer_name" required>
+                    </div>
 
-      <label>Service Category</label>
-      <select name="category" required>
-        <option value="">Select category</option>
-        <option>Home & Property</option>
-        <option>Personal & Care</option>
-        <option>Creative & Media</option>
-        <option>Events & Promotion</option>
-      </select>
+                    <!-- Email -->
+                    <div class="form-group">
+                        <label for="email">Email Address *</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
 
-      <label>Service</label>
-      <select name="service" required>
-        <option value="">Select service</option>
+                    <!-- Phone -->
+                    <div class="form-group">
+                        <label for="phone">Phone Number *</label>
+                        <input type="tel" id="phone" name="phone" required>
+                    </div>
 
-        <optgroup label="HOME & PROPERTY SERVICES">
-          <option>Home Cleaning</option>
-          <option>Window Cleaning</option>
-          <option>Property Cleaning</option>
-          <option>Interior Decoration</option>
-        </optgroup>
+                    <!-- Booking Date -->
+                    <div class="form-group">
+                        <label for="bookingDate">Service Date *</label>
+                        <input type="date" id="bookingDate" name="booking_date" required>
+                    </div>
 
-        <optgroup label="PERSONAL & CARE">
-          <option>Babysitting</option>
-          <option>Dog Walking</option>
-          <option>Personal Shopper</option>
-          <option>Assistant</option>
-          <option>Delivery Assistance*</option>
-          <option>Etc.</option>
-        </optgroup>
+                    <!-- Arrival Window -->
+                    <div class="form-group">
+                        <label for="arrivalWindow">Arrival Time Window *</label>
+                        <select id="arrivalWindow" name="arrival_window" required>
+                            <option value="">Select a time...</option>
+                            <option value="8am-10am">8am - 10am</option>
+                            <option value="10am-12pm">10am - 12pm</option>
+                            <option value="12pm-2pm">12pm - 2pm</option>
+                            <option value="2pm-4pm">2pm - 4pm</option>
+                            <option value="4pm-6pm">4pm - 6pm</option>
+                            <option value="6pm-8pm">6pm - 8pm</option>
+                        </select>
+                    </div>
 
-        <optgroup label="CREATIVE & MEDIA">
-          <option>Vocalist</option>
-          <option>Songwriting</option>
-          <option>Model</option>
-          <option>Clothing Stylist</option>
-          <option>Food Reviewer</option>
-        </optgroup>
+                    <!-- Additional Details -->
+                    <div class="form-group">
+                        <label for="additionalDetails">Additional Details</label>
+                        <textarea id="additionalDetails" name="additional_details" rows="4"></textarea>
+                    </div>
 
-        <optgroup label="EVENTS & PROMOTION">
-          <option>Event Staff</option>
-          <option>Cater Help</option>
-          <option>Promoter</option>
-          <option>Sales</option>
-        </optgroup>
-      </select>
+                    <!-- Terms -->
+                    <div class="form-group checkbox-group">
+                        <input type="checkbox" id="terms" name="terms_accepted" required>
+                        <label for="terms">I accept the terms and conditions *</label>
+                    </div>
 
-      <label>Date</label>
-      <input type="date" name="date" required>
+                    <!-- Submit Button -->
+                    <button type="submit" class="submit-btn" id="submitBtn">
+                        <span id="btnText">Book Now</span>
+                        <span id="loader" class="loader hidden"></span>
+                    </button>
+                </form>
 
-      <!-- YOUR STATIC TIME DROPDOWN RESTORED -->
-      <label>Preferred Time</label>
-      <select name="time" required id="arrivalWindowSelect">
-        <option value="">Select time</option>
-        <option value="08:00-10:00">8:00 AM – 10:00 AM</option>
-        <option value="10:00-12:00">10:00 AM – 12:00 PM</option>
-        <option value="12:00-14:00">12:00 PM – 2:00 PM</option>
-        <option value="14:00-16:00">2:00 PM – 4:00 PM</option>
-        <option value="16:00-18:00">4:00 PM – 6:00 PM</option>
-      </select>
+                <!-- Success Message -->
+                <div id="successMessage" class="success-message hidden">
+                    <div class="success-icon">✓</div>
+                    <h3>Booking Confirmed!</h3>
+                    <p>We've received your booking and sent a confirmation to your email.</p>
+                </div>
 
-      <label>Additional Details</label>
-      <textarea name="details" placeholder="Tell us anything we should know..."></textarea>
+                <!-- Error Message -->
+                <div id="errorMessage" class="error-message hidden">
+                    <p>Something went wrong. Please try again or contact us directly.</p>
+                </div>
+            </div>
+        </main>
 
-      <div style="margin-top:20px; font-size:13px;">
-        <details style="margin-bottom:10px;">
-          <summary style="cursor:pointer; font-weight:bold;">Read Terms & Conditions</summary>
+        <footer>
+            <p>&copy; 2026 Need It! Got It! All rights reserved.</p>
+            <p>Phone: (321) 260-2212 | Email: Info.needitgotit@gmail.com</p>
+        </footer>
+    </div>
 
-          <div style="max-height:220px; overflow-y:auto; padding:10px; border:1px solid #ccc; border-radius:6px; background:#fafafa;">
-
-            <h3>TERMS & CONDITIONS</h3>
-            <p><strong>Need It! Got It!</strong><br>
-            Owner: James Brown<br>
-            Effective Date: January 1, 2025</p>
-
-            <p>By submitting a booking request, receiving services, or otherwise engaging with Need It! Got It!, you agree to these Terms & Conditions (“Agreement”). If you do not agree, do not book or receive services.</p>
-
-            <p><strong>1. Services Overview</strong><br>
-            Need It! Got It! provides access to on-demand services across multiple categories, including but not limited to home services, labor assistance, personal support, creative services, pet-related services, childcare-related support, and event services. All services are subject to availability, request details, location, and conditions encountered. No service is guaranteed until confirmed.</p>
-
-            <p><strong>2. Booking, Arrival Windows & Scheduling</strong><br>
-            All bookings are scheduled using arrival windows, not guaranteed arrival times. Arrival windows provide flexibility for routing, preparation, traffic, weather, and prior service completion. While reasonable efforts are made to arrive within the selected window, exact arrival times are not guaranteed. Delays caused by factors beyond reasonable control do not constitute a breach of this Agreement.</p>
-
-            <p><strong>3. Service Duration, Minimum Charges & Estimates</strong><br>
-            All service durations are estimates only. Most services are subject to a minimum billable time, regardless of actual time spent. Services exceeding the minimum may be billed in applicable increments depending on the service category. Pricing displayed as “From $X/hr” reflects base pricing only and may be adjusted based on scope, complexity, urgency, site conditions, or special requirements discovered before or during service.</p>
-
-            <p><strong>4. Scope of Work & Client Responsibilities</strong><br>
-            Clients agree to provide accurate, complete, and truthful information when submitting a service request. If actual conditions differ materially from the request, Need It! Got It! may adjust pricing, extend service time, reschedule, or decline service. Clients are responsible for ensuring a safe, lawful, and accessible service environment, disclosure of hazards, restrictions, or special conditions, and reasonable access to the service location. Services may be paused or discontinued if conditions are unsafe, illegal, or materially misrepresented.</p>
-
-            <p><strong>5. Property Condition & Pre-Existing Damage Acknowledgment</strong><br>
-            By booking services, clients acknowledge that pre-existing damage, wear, structural issues, or hidden defects may exist. Need It! Got It! is not responsible for pre-existing damage, normal wear and tear, or issues resulting from undisclosed conditions.</p>
-
-            <p><strong>6. Payments, Adjustments & Non-Payment</strong><br>
-            Payment is due upon completion unless otherwise agreed. Failure to submit payment may result in additional fees, collection efforts, and denial of future service.</p>
-
-            <p><strong>7. Cancellations & No-Shows</strong><br>
-            Cancellations or rescheduling should be made as early as possible. Late cancellations or no-shows may result in cancellation fees or charges up to the applicable minimum service fee.</p>
-
-            <p><strong>8. Independent Contractors & No Employment Relationship</strong><br>
-            Services may be performed by independent contractors. Nothing in this Agreement creates an employer–employee, partnership, joint venture, or agency relationship.</p>
-
-            <p><strong>9. Assumption of Risk</strong><br>
-            Certain services involve inherent risks, including physical labor, tools, property interaction, animals, children, or event environments. Clients voluntarily assume all ordinary risks associated with the requested service.</p>
-
-            <p><strong>10. Limitation of Liability (Florida-Compliant)</strong><br>
-            Need It! Got It! and its owner shall not be liable for indirect, incidental, consequential, or special damages. Liability is limited to the amount paid for the specific service rendered, except where gross negligence or intentional misconduct applies.</p>
-
-            <p><strong>11. Indemnification & Hold Harmless</strong><br>
-            Clients agree to indemnify and hold harmless Need It! Got It! from claims arising out of inaccurate service information, unsafe conditions, negligence, or violations of this Agreement.</p>
-
-            <p><strong>12. Photo & Documentation Consent</strong><br>
-            Clients consent to reasonable photo or video documentation for quality assurance, training, or dispute resolution purposes. Personal identifying information will not be shared publicly without consent.</p>
-
-            <p><strong>13. Category-Specific Addendums</strong><br>
-            A. Childcare / Child-Related Services<br>
-            Services involving minors are limited to the agreed scope. Need It! Got It! does not replace parental or legal guardianship responsibility. Clients remain solely responsible for supervision, health disclosures, and safety unless otherwise agreed in writing.</p>
-
-            <p>B. Pet Services<br>
-            Clients are responsible for disclosing pet behavior, medical conditions, and handling requirements. Need It! Got It! is not liable for injury caused by animals or issues arising from undisclosed conditions.</p>
-
-            <p>C. Event & Group Services<br>
-            Event services are subject to environmental, attendee, venue, and third-party variables. Need
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
