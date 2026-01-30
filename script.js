@@ -13,7 +13,11 @@ const FORMSPREE_ENDPOINT = "https://formspree.io/f/xzdzrwea";
 /* ============================
    EMAILJS INITIALIZATION
 ============================ */
-emailjs.init(EMAILJS_PUBLIC_KEY);
+try {
+    emailjs.init(EMAILJS_PUBLIC_KEY);
+} catch (e) {
+    console.error("EmailJS failed to initialize:", e);
+}
 
 /* ============================
    SERVICE DATA (MATCHES FLYER)
@@ -22,7 +26,8 @@ const services = {
     home_property: [
         { id: "home_cleaning", name: "Home Cleaning", price: "From $39/hr" },
         { id: "window_cleaning", name: "Window Cleaning", price: "From $34/hr" },
-        { id: "property_cleaning", name: "Property Cleaning", price: "From $45/hr" }
+        { id: "property_cleaning", name: "Property Cleaning", price: "From $45/hr" },
+        { id: "interior_decoration", name: "Interior Decoration", price: "From $45/hr" }
     ],
     personal_care: [
         { id: "babysitting", name: "Babysitting", price: "From $22/hr" },
@@ -34,12 +39,15 @@ const services = {
     creative_media: [
         { id: "vocalist", name: "Vocalist", price: "From $45/hr" },
         { id: "songwriting", name: "Songwriting", price: "From $50/hr" },
-        { id: "model", name: "Model", price: "From $30/hr" }
+        { id: "model", name: "Model", price: "From $30/hr" },
+        { id: "clothing_stylist", name: "Clothing Stylist", price: "From $35/hr" },
+        { id: "food_reviewer", name: "Food Reviewer", price: "From $50/hr" }
     ],
     events_promotion: [
         { id: "event_staff", name: "Event Staff", price: "From $18/hr" },
         { id: "cater_help", name: "Cater Help", price: "From $20/hr" },
-        { id: "promoter", name: "Promoter", price: "From $25/hr" }
+        { id: "promoter", name: "Promoter", price: "From $25/hr" },
+        { id: "sales", name: "Sales", price: "$40/hr or commission" }
     ]
 };
 
@@ -102,15 +110,23 @@ form.addEventListener("submit", async (e) => {
         /* ============================
            SEND EMAIL TO CUSTOMER
         ============================ */
-        await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, data);
+        try {
+            await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, data);
+        } catch (e) {
+            console.error("EmailJS customer email failed:", e);
+        }
 
         /* ============================
            SEND EMAIL TO ADMIN
         ============================ */
-        await emailjs.send(EMAILEMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
-            ...data,
-            admin_copy: "YES"
-        });
+        try {
+            await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+                ...data,
+                admin_copy: "YES"
+            });
+        } catch (e) {
+            console.error("EmailJS admin email failed:", e);
+        }
 
         /* ============================
            FORMSPREE BACKUP
