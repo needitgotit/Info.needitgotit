@@ -1,4 +1,6 @@
- /* ============================
+console.log("JS LOADED");
+
+/* ============================
    CONFIGURATION KEYS
 ============================ */
 const SUPABASE_URL = "https://kuabmauutjchvvrfycxk.supabase.co";
