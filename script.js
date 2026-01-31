@@ -1,5 +1,3 @@
-console.log("JS LOADED");
-
 /* ============================
    CONFIGURATION KEYS
 ============================ */
@@ -15,8 +13,11 @@ const FORMSPREE_ENDPOINT = "https://formspree.io/f/xzdzrwea";
 /* ============================
    EMAILJS INITIALIZATION
 ============================ */
+let emailJsReady = false;
+
 try {
     emailjs.init(EMAILJS_PUBLIC_KEY);
+    emailJsReady = true;
 } catch (e) {
     console.error("EmailJS failed to initialize:", e);
 }
@@ -133,12 +134,15 @@ form.addEventListener("submit", async (e) => {
         /* ============================
            FORMSPREE BACKUP
         ============================ */
-        await fetch(FORMSPREE_ENDPOINT, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(data)
-        });
+      const resp = await fetch(FORMSPREE_ENDPOINT, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data)
+});
 
+if (!resp.ok) {
+    throw new Error("Formspree failed");
+}
         successMessage.classList.remove("hidden");
         form.reset();
         serviceSelect.innerHTML = `<option value="">Select a service</option>`;
@@ -192,11 +196,13 @@ function collectFormData() {
 function validateForm(data) {
     if (!data.service_category) return false;
     if (!data.service_id) return false;
-    if (!data.booking_date) return false;
+    if (!data.booking_date) return false;                                                                                                                                                                                                                                                                      
+   const today = new Date().toISOString().split("T")[0];
+    if (data.booking_date < today) return false;
     if (!data.arrival_window) return false;
     if (!data.customer_name) return false;
     if (!data.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) return false;
-    if (!data.phone) return false;
+    if (!/^\+?[0-9\s\-()]{7,20}$/.test(data.phone)) return false;
     if (!data.terms_accepted) return false;
     return true;
 }
